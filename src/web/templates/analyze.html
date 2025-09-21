@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1><i class="fas fa-waveform-lines"></i> Audio Analysis</h1>
+        <p class="lead">Upload an audio file to analyze its characteristics and get genre predictions using machine learning.</p>
+        
+        <div class="card">
+            <div class="card-body">
+                <form id="audioAnalysisForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="audioFile" class="form-label">Select Audio File</label>
+                        <input type="file" class="form-control" id="audioFile" name="audio_file" 
+                               accept=".wav,.mp3,.flac,.aiff,.m4a" required>
+                        <div class="form-text">
+                            Supported formats: WAV, MP3, FLAC, AIFF, M4A (max 10MB)
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-chart-line"></i> Analyze Audio
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Results Section -->
+        <div id="resultsSection" class="mt-4" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-bar"></i> Analysis Results</h5>
+                </div>
+                <div class="card-body">
+                    <div id="genrePrediction" class="mb-4"></div>
+                    <div id="audioFeatures"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Loading Section -->
+        <div id="loadingSection" class="mt-4" style="display: none;">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Analyzing audio file...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Error Section -->
+        <div id="errorSection" class="mt-4" style="display: none;">
+            <div class="alert alert-danger">
+                <h5><i class="fas fa-exclamation-triangle"></i> Error</h5>
+                <p id="errorMessage"></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> How It Works</h5>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li><strong>Upload:</strong> Select an audio file from your device</li>
+                    <li><strong>Extract:</strong> AI analyzes tempo, spectral, and harmonic features</li>
+                    <li><strong>Classify:</strong> Machine learning model predicts the genre</li>
+                    <li><strong>Results:</strong> View detailed analysis and confidence scores</li>
+                </ol>
+                
+                <h6 class="mt-3">Features Analyzed:</h6>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> Tempo & BPM</li>
+                    <li><i class="fas fa-check text-success"></i> Spectral Characteristics</li>
+                    <li><i class="fas fa-check text-success"></i> Harmonic Content</li>
+                    <li><i class="fas fa-check text-success"></i> MFCC Features</li>
+                    <li><i class="fas fa-check text-success"></i> Chroma Analysis</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-lightbulb"></i> Tips for Best Results</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-music"></i> Use high-quality audio files</li>
+                    <li><i class="fas fa-clock"></i> 30-60 second clips work well</li>
+                    <li><i class="fas fa-volume-up"></i> Ensure good audio levels</li>
+                    <li><i class="fas fa-ban"></i> Avoid heavily compressed files</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('audioAnalysisForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const fileInput = document.getElementById('audioFile');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        showError('Please select an audio file.');
+        return;
+    }
+    
+    // Check file size (10MB limit)
+    if (file.size > 10 * 1024 * 1024) {
+        showError('File size must be less than 10MB.');
+        return;
+    }
+    
+    // Show loading
+    showLoading();
+    
+    // Create FormData
+    const formData = new FormData();
+    formData.append('audio_file', file);
+    
+    // Send request
+    fetch('/analyze', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideLoading();
+        
+        if (data.error) {
+            showError(data.error);
+        } else {
+            showResults(data);
+        }
+    })
+    .catch(error => {
+        hideLoading();
+        showError('An error occurred while analyzing the file: ' + error.message);
+    });
+});
+
+function showLoading() {
+    document.getElementById('loadingSection').style.display = 'block';
+    document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('errorSection').style.display = 'none';
+}
+
+function hideLoading() {
+    document.getElementById('loadingSection').style.display = 'none';
+}
+
+function showError(message) {
+    document.getElementById('errorMessage').textContent = message;
+    document.getElementById('errorSection').style.display = 'block';
+    document.getElementById('resultsSection').style.display = 'none';
+}
+
+function showResults(data) {
+    document.getElementById('errorSection').style.display = 'none';
+    
+    // Genre prediction
+    const predictionDiv = document.getElementById('genrePrediction');
+    if (data.predicted_genre && data.confidence) {
+        const confidencePercent = (data.confidence * 100).toFixed(1);
+        predictionDiv.innerHTML = `
+            <div class="alert alert-success">
+                <h5><i class="fas fa-bullseye"></i> Predicted Genre: ${data.predicted_genre}</h5>
+                <div class="progress mb-2">
+                    <div class="progress-bar" role="progressbar" style="width: ${confidencePercent}%">
+                        ${confidencePercent}% confidence
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        predictionDiv.innerHTML = `
+            <div class="alert alert-warning">
+                <h5><i class="fas fa-exclamation-triangle"></i> No Genre Prediction</h5>
+                <p>The classification model is not yet trained. Here are the extracted audio features:</p>
+            </div>
+        `;
+    }
+    
+    // Audio features
+    const featuresDiv = document.getElementById('audioFeatures');
+    if (data.features) {
+        let featuresHtml = '<h6>Extracted Audio Features:</h6><div class="row">';
+        
+        // Group features by type
+        const featureGroups = {
+            'Tempo': ['tempo', 'beat_count', 'onset_count', 'onset_density'],
+            'Spectral': ['spectral_centroid_mean', 'spectral_rolloff_mean', 'spectral_bandwidth_mean'],
+            'Harmonic': ['harmonic_energy', 'percussive_energy', 'harmonic_percussive_ratio'],
+            'Chroma': ['chroma_mean', 'chroma_std', 'dominant_chroma']
+        };
+        
+        for (const [groupName, featureKeys] of Object.entries(featureGroups)) {
+            featuresHtml += `<div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h6>${groupName} Features</h6>
+                    </div>
+                    <div class="card-body">`;
+            
+            for (const key of featureKeys) {
+                if (data.features[key] !== undefined) {
+                    const value = typeof data.features[key] === 'number' ? 
+                        data.features[key].toFixed(2) : data.features[key];
+                    featuresHtml += `<p class="mb-1"><strong>${key.replace(/_/g, ' ')}:</strong> ${value}</p>`;
+                }
+            }
+            
+            featuresHtml += `</div></div></div>`;
+        }
+        
+        featuresHtml += '</div>';
+        featuresDiv.innerHTML = featuresHtml;
+    }
+    
+    document.getElementById('resultsSection').style.display = 'block';
+}
+</script>
+{% endblock %}

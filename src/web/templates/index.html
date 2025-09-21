@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section text-center py-5 mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px;">
+    <h1 class="display-4 mb-3">
+        <i class="fas fa-music"></i> Electronic Music Taxonomy Database
+    </h1>
+    <p class="lead mb-4">
+        Explore the rich landscape of electronic music genres, from the pioneering sounds of the 1970s to today's cutting-edge productions.
+    </p>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <h3><i class="fas fa-list-ul"></i> {{ total_genres }}</h3>
+            <p>Genres Catalogued</p>
+        </div>
+        <div class="col-md-4">
+            <h3><i class="fas fa-chart-bar"></i> Audio Analysis</h3>
+            <p>AI-Powered Genre ID</p>
+        </div>
+        <div class="col-md-4">
+            <h3><i class="fas fa-history"></i> Timeline</h3>
+            <p>50+ Years of History</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <h2><i class="fas fa-fire"></i> Recently Added Genres</h2>
+        <div class="row">
+            {% for genre in recent_genres %}
+            <div class="col-md-6 mb-3">
+                <div class="card genre-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ url_for('genre_detail', genre_id=genre.id) }}" class="text-decoration-none">
+                                {{ genre.name }}
+                            </a>
+                        </h5>
+                        <p class="card-text">
+                            {{ genre.description[:100] }}{% if genre.description|length > 100 %}...{% endif %}
+                        </p>
+                        {% if genre.origin_year %}
+                        <small class="text-muted">
+                            <i class="fas fa-calendar"></i> {{ genre.origin_year }}
+                            {% if genre.origin_location %}
+                            | <i class="fas fa-map-marker-alt"></i> {{ genre.origin_location }}
+                            {% endif %}
+                        </small>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('list_genres') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-list"></i> Browse All Genres
+            </a>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-tools"></i> Tools & Features</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('analyze_audio') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-waveform-lines"></i> Analyze Audio File
+                    </a>
+                    <a href="{{ url_for('timeline') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-clock"></i> View Timeline
+                    </a>
+                    <a href="{{ url_for('search') }}" class="btn btn-outline-info">
+                        <i class="fas fa-search"></i> Advanced Search
+                    </a>
+                    <a href="/api/genres" class="btn btn-outline-success">
+                        <i class="fas fa-code"></i> API Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> About This Database</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    This comprehensive database catalogs electronic music genres based on Wikipedia's extensive list, 
+                    enhanced with audio analysis capabilities and historical timeline data.
+                </p>
+                <p class="card-text">
+                    <strong>Features:</strong>
+                </p>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> Genre Classification</li>
+                    <li><i class="fas fa-check text-success"></i> Audio Feature Analysis</li>
+                    <li><i class="fas fa-check text-success"></i> Historical Timeline</li>
+                    <li><i class="fas fa-check text-success"></i> Machine Learning ID</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <h2><i class="fas fa-crown"></i> The BIG 4 - Core Electronic Genres</h2>
+        <div class="row">
+            <div class="col-md-3 mb-3 d-flex">
+                <div class="card text-center audio-feature w-100">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <h5><i class="fas fa-home"></i> House</h5>
+                        <p class="mb-0">4/4 beat, repetitive rhythms</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3 d-flex">
+                <div class="card text-center audio-feature w-100">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <h5><i class="fas fa-bolt"></i> Breaks</h5>
+                        <p class="mb-0">Syncopated rhythms, THE FOUNDATION!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3 d-flex">
+                <div class="card text-center audio-feature w-100">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <h5><i class="fas fa-magic"></i> Trance</h5>
+                        <p class="mb-0">Hypnotic, uplifting melodies</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3 d-flex">
+                <div class="card text-center audio-feature w-100">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <h5><i class="fas fa-drum"></i> Drum & Bass</h5>
+                        <p class="mb-0">Fast breakbeats, heavy bass</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

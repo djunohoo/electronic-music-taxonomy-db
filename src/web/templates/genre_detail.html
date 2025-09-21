@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>{{ genre.name }}</h1>
+        
+        {% if genre.description %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> Description</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ genre.description }}</p>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if characteristics %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fas fa-list-check"></i> Characteristics</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for characteristic in characteristics %}
+                    <div class="col-md-6 mb-3">
+                        <div class="border rounded p-3">
+                            <h6 class="text-primary">{{ characteristic.characteristic_type|title }}</h6>
+                            <strong>{{ characteristic.name }}</strong>
+                            {% if characteristic.description %}
+                            <p class="small mb-1">{{ characteristic.description }}</p>
+                            {% endif %}
+                            {% if characteristic.value %}
+                            <span class="badge bg-secondary">{{ characteristic.value }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if timeline_events %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fas fa-clock"></i> Timeline</h5>
+            </div>
+            <div class="card-body">
+                {% for event in timeline_events %}
+                <div class="timeline-event">
+                    <h6>{{ event.year }} - {{ event.event_type|title }}</h6>
+                    <p>{{ event.description }}</p>
+                    {% if event.location %}
+                    <small class="text-muted">
+                        <i class="fas fa-map-marker-alt"></i> {{ event.location }}
+                    </small>
+                    {% endif %}
+                    {% if event.key_artists %}
+                    <br><small class="text-muted">
+                        <i class="fas fa-users"></i> Key Artists: {{ event.key_artists }}
+                    </small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card sticky-top" style="top: 20px;">
+            <div class="card-header">
+                <h5><i class="fas fa-info"></i> Quick Info</h5>
+            </div>
+            <div class="card-body">
+                {% if genre.origin_year %}
+                <p><strong>Origin Year:</strong> {{ genre.origin_year }}</p>
+                {% endif %}
+                
+                {% if genre.origin_location %}
+                <p><strong>Origin Location:</strong> {{ genre.origin_location }}</p>
+                {% endif %}
+                
+                {% if genre.energy_level %}
+                <p><strong>Energy Level:</strong> 
+                    <span class="badge bg-primary">{{ genre.energy_level }}/10</span>
+                </p>
+                {% endif %}
+                
+                {% if genre.bpm_typical %}
+                <p><strong>Typical BPM:</strong> {{ genre.bpm_typical }}
+                    {% if genre.bpm_min and genre.bpm_max %}
+                    <br><small class="text-muted">Range: {{ genre.bpm_min }} - {{ genre.bpm_max }}</small>
+                    {% endif %}
+                </p>
+                {% endif %}
+                
+                {% if genre.wikipedia_url %}
+                <a href="{{ genre.wikipedia_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                    <i class="fab fa-wikipedia-w"></i> Wikipedia Article
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if audio_features %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-waveform-lines"></i> Audio Features</h5>
+            </div>
+            <div class="card-body">
+                {% if audio_features.bpm_typical %}
+                <div class="audio-feature mb-2">
+                    <strong>Typical BPM:</strong> {{ audio_features.bpm_typical }}
+                    {% if audio_features.bpm_min and audio_features.bpm_max %}
+                    <br><small>Range: {{ audio_features.bpm_min }} - {{ audio_features.bpm_max }}</small>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                {% if audio_features.time_signature %}
+                <div class="audio-feature mb-2">
+                    <strong>Time Signature:</strong> {{ audio_features.time_signature }}
+                </div>
+                {% endif %}
+                
+                {% if audio_features.typical_instruments %}
+                <div class="audio-feature mb-2">
+                    <strong>Typical Instruments:</strong>
+                    <p class="small">{{ audio_features.typical_instruments }}</p>
+                </div>
+                {% endif %}
+                
+                {% if audio_features.production_techniques %}
+                <div class="audio-feature mb-2">
+                    <strong>Production Techniques:</strong>
+                    <p class="small">{{ audio_features.production_techniques }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Related Genres -->
+        {% if genre.subgenres or genre.parent_genres %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-sitemap"></i> Related Genres</h5>
+            </div>
+            <div class="card-body">
+                {% if genre.parent_genres %}
+                <h6>Parent Genres:</h6>
+                <div class="mb-3">
+                    {% for parent in genre.parent_genres %}
+                    <a href="{{ url_for('genre_detail', genre_id=parent.id) }}" class="badge bg-primary text-decoration-none me-1">
+                        {{ parent.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                {% if genre.subgenres %}
+                <h6>Subgenres:</h6>
+                <div>
+                    {% for subgenre in genre.subgenres %}
+                    <a href="{{ url_for('genre_detail', genre_id=subgenre.id) }}" class="badge bg-secondary text-decoration-none me-1">
+                        {{ subgenre.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Keywords and Aliases -->
+        {% if keywords %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-tags"></i> Keywords & Aliases</h5>
+            </div>
+            <div class="card-body">
+                {% for keyword in keywords %}
+                <span class="badge bg-{{ 'primary' if keyword.keyword_type == 'alias' else 'secondary' if keyword.keyword_type == 'tag' else 'info' }} me-1 mb-1">
+                    {{ keyword.keyword }}
+                </span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Label Associations -->
+        {% if label_associations %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-record-vinyl"></i> Record Labels</h5>
+            </div>
+            <div class="card-body">
+                {% for association in label_associations %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong>{{ association.label.name }}</strong>
+                    <div class="progress" style="width: 100px;">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {{ (association.association_strength * 100)|round }}%">
+                            {{ (association.association_strength * 100)|round }}%
+                        </div>
+                    </div>
+                </div>
+                {% if association.label.country %}
+                <small class="text-muted">{{ association.label.country }}</small>
+                {% endif %}
+                {% if not loop.last %}<hr>{% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Mixing Compatibility -->
+        {% if compatible_genres %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-arrows-alt-h"></i> Mixing Compatibility</h5>
+            </div>
+            <div class="card-body">
+                <p class="small text-muted">Genres that mix well with {{ genre.name }}:</p>
+                {% for compatibility in compatible_genres %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <a href="{{ url_for('genre_detail', genre_id=compatibility.genre2_id) }}" class="text-decoration-none">
+                        {{ compatibility.genre2.name }}
+                    </a>
+                    <div class="progress" style="width: 80px;">
+                        <div class="progress-bar bg-success" role="progressbar" 
+                             style="width: {{ (compatibility.compatibility_score * 100)|round }}%">
+                            {{ (compatibility.compatibility_score * 100)|round }}%
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('list_genres') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Genres
+    </a>
+</div>
+{% endblock %}
