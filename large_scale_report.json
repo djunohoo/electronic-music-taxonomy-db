@@ -1,0 +1,113 @@
+{
+  "overall_statistics": {
+    "test_scale": "LARGE_SCALE",
+    "total_files_scanned": 46496,
+    "total_files_processed": 23248,
+    "total_errors": 22807,
+    "algorithms_tested": [
+      "spectral_custom",
+      "file_hash"
+    ],
+    "test_duration_minutes": 80.91201655467351,
+    "config": {
+      "max_files": null,
+      "sample_size": 1000,
+      "batch_size": 100,
+      "parallel_workers": 12,
+      "save_interval": 50,
+      "algorithms": [
+        "spectral_custom",
+        "file_hash"
+      ],
+      "resume_from_checkpoint": true
+    },
+    "timestamp": "2025-09-28 08:28:42"
+  },
+  "performance_analysis": {
+    "spectral_custom": {
+      "total_processed": 23248,
+      "successful": 3,
+      "failed": 23245,
+      "success_rate": 0.00012904335856847902,
+      "avg_processing_time": 1.7187817096710205,
+      "total_processing_time": 5.1563451290130615,
+      "min_processing_time": 1.6420230865478516,
+      "max_processing_time": 1.8499374389648438,
+      "avg_audio_duration": 30.0
+    },
+    "file_hash": {
+      "total_processed": 23248,
+      "successful": 23248,
+      "failed": 0,
+      "success_rate": 1.0,
+      "avg_processing_time": 0.012791097953823298,
+      "total_processing_time": 297.367445230484,
+      "min_processing_time": 0.002525806427001953,
+      "max_processing_time": 0.11504149436950684,
+      "avg_audio_duration": 0
+    }
+  },
+  "duplicate_analysis": {
+    "spectral_custom": {
+      "total_files": 441,
+      "duplicate_groups": 1,
+      "duplicate_files": 3,
+      "unique_files": 438,
+      "duplication_rate": 0.006802721088435374,
+      "average_group_size": 3.0,
+      "largest_group": 3,
+      "sample_duplicates": {
+        "424136a6befa40f0076fda57a4155fb5": [
+          "Z:\\Workspaces\\POC Testing\\Daniel_Kandi_&_Sarah_Russell-Change_The_World_(Estiva_Remix)_[B-MP3].mp3",
+          "Z:\\Workspaces\\POC Testing\\House -  - Daniel Kandi & Sarah Russell-Change The World (Estiva Remix) - 0.mp3",
+          "Z:\\Workspaces\\POC Testing\\House -  - Daniel Kandi & Sarah Russell-Change The World (Estiva Remix) - 0_001.mp3"
+        ]
+      }
+    },
+    "file_hash": {
+      "total_files": 23248,
+      "duplicate_groups": 8903,
+      "duplicate_files": 20693,
+      "unique_files": 2555,
+      "duplication_rate": 0.8900980729525121,
+      "average_group_size": 2.324272717061665,
+      "largest_group": 30,
+      "sample_duplicates": {
+        "92f87997e4eaa3ee115d398e88d63993": [
+          "Z:\\Workspaces\\POC Testing\\01 Just Keep Walking (A Side Mix)_001.m4a",
+          "Z:\\Workspaces\\POC Testing\\01 Just Keep Walking (A Side Mix)_002.m4a",
+          "Z:\\Workspaces\\POC Testing\\01 Just Keep Walking (A Side Mix).m4a"
+        ],
+        "4fc21beeebd7854b39282af1671165cc": [
+          "Z:\\Workspaces\\POC Testing\\01 Los Pueblos (Pablo Fierro Remix).mp3",
+          "Z:\\Workspaces\\POC Testing\\01 Los Pueblos (Pablo Fierro Remix)_001.mp3"
+        ],
+        "169a55533ef3b10e715dd36c51f22014": [
+          "Z:\\Workspaces\\POC Testing\\01 Make It Through.mp3",
+          "Z:\\Workspaces\\POC Testing\\01 Make It Through_001.mp3"
+        ],
+        "dbadb37bd3e092b3ba7fb037120a1630": [
+          "Z:\\Workspaces\\POC Testing\\01 Martin EZ  Brian Boncher  Good Times Original Mix.wav",
+          "Z:\\Workspaces\\POC Testing\\01 Martin EZ  Brian Boncher  Good Times Original Mix_001.wav",
+          "Z:\\Workspaces\\POC Testing\\01_Martin_EZ_Brian_Boncher_Good_Times_Original_Mix_[A-WAV].wav"
+        ],
+        "1dc986d2c78664ef3ddf228e0d568434": [
+          "Z:\\Workspaces\\POC Testing\\01 Martin EZ  Brian Boncher feat Alex Peace .wav",
+          "Z:\\Workspaces\\POC Testing\\01 Martin EZ  Brian Boncher feat Alex Peace _001.wav",
+          "Z:\\Workspaces\\POC Testing\\01_Martin_EZ_Brian_Boncher_feat_Alex_Peace_-_Booty_Move_Original_Mix_[A-WAV].wav"
+        ]
+      }
+    }
+  },
+  "error_analysis": {
+    "spectral_custom": {
+      "other": 22807
+    }
+  },
+  "recommendations": [
+    "\ud83d\ude80 PERFORMANCE: FILE_HASH is fastest at 0.013s/file",
+    "\ud83c\udfaf DUPLICATE DETECTION: FILE_HASH found most duplicates (8903 groups)",
+    "\ud83d\udcc8 SCALE VALIDATION: Successfully processed 10,000+ files - ready for production",
+    "\u274c ERROR RATE: High (>15% errors) - investigate before production"
+  ]
+}

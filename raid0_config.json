@@ -1,0 +1,14 @@
+{
+  "batch_size": 400,
+  "parallel_workers": 12,
+  "save_interval": 200,
+  "algorithms": [
+    "spectral_custom",
+    "file_hash"
+  ],
+  "raid0_optimizations": {
+    "prefetch_files": true,
+    "io_buffer_size": "64KB",
+    "concurrent_file_handles": 16
+  }
+}

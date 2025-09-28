@@ -1,0 +1,15 @@
+{
+  "summary": {
+    "total_planned": 23250,
+    "successfully_copied": 23250,
+    "errors": 0,
+    "total_time_minutes": 99.89251708189646,
+    "average_rate_files_per_sec": 3.8791694445171476
+  },
+  "paths": {
+    "source_root": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals",
+    "destination_root": "Z:\\Workspaces\\POC Testing",
+    "database_path": "None"
+  },
+  "timestamp": "2025-09-28 06:46:07"
+}

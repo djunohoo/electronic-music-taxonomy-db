@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural Intelligence AI Training Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <style>
+        :root {
+            --neon-cyan: #00ffff;
+            --neon-purple: #ff00ff;
+            --neon-green: #00ff00;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            padding: 20px;
+        }
+
+        .neon-card {
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .neon-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple), var(--neon-green));
+            z-index: -1;
+            margin: -2px;
+            border-radius: inherit;
+        }
+
+        .neon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .main-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.2); }
+        }
+
+        .training-zone {
+            border: 3px solid var(--neon-green);
+            animation: pulse-border 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: var(--neon-green); }
+            50% { border-color: var(--neon-cyan); }
+        }
+
+        .ai-question {
+            background: rgba(0, 255, 255, 0.1);
+            border-left: 5px solid var(--neon-cyan);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        .response-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .genre-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--neon-purple);
+            background: rgba(255, 0, 255, 0.1);
+            color: var(--text-primary);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .genre-btn:hover, .genre-btn.selected {
+            background: var(--neon-purple);
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            height: 10px;
+            border-radius: 5px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--neon-cyan);
+        }
+
+        .activity-item {
+            background: rgba(0, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 3px solid var(--neon-green);
+        }
+
+        .training-feedback {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(0, 255, 0, 0.9);
+            color: #000;
+            font-weight: bold;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .training-feedback.show {
+            transform: translateX(0);
+        }
+
+        .custom-response {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--neon-cyan);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .loading-spinner {
+            border: 3px solid transparent;
+            border-top: 3px solid var(--neon-cyan);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .question-meta {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .uncertainty-meter {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .uncertainty-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-green), orange, red);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid dashboard-container">
+        <h1 class="main-title">
+            <i class="fas fa-brain"></i> Cultural Intelligence AI Training Dashboard
+        </h1>
+
+        <!-- Training Feedback Toast -->
+        <div id="trainingFeedback" class="training-feedback">
+            <i class="fas fa-check-circle"></i> <span id="feedbackText">Training response received!</span>
+        </div>
+
+        <div class="row">
+            <!-- AI Training Zone -->
+            <div class="col-lg-8">
+                <div class="neon-card training-zone">
+                    <h3><i class="fas fa-robot"></i> AI Training Zone - Live Learning</h3>
+                    <p class="text-secondary">Help train the AI in real-time! Perfect for showcasing human-AI collaboration on your livestream.</p>
+                    
+                    <div id="currentQuestion" class="ai-question">
+                        <div class="loading-spinner"></div>
+                        <p class="text-center">Loading AI question...</p>
+                    </div>
+
+                    <div id="responseSection" style="display: none;">
+                        <div class="question-meta">
+                            <strong>Question Type:</strong> <span id="questionType"></span> | 
+                            <strong>Uncertainty:</strong> <span id="uncertaintyScore"></span>%
+                        </div>
+                        
+                        <div class="uncertainty-meter">
+                            <div id="uncertaintyFill" class="uncertainty-fill"></div>
+                        </div>
+
+                        <h5><i class="fas fa-music"></i> Quick Genre Classification:</h5>
+                        <div class="response-buttons">
+                            <button class="genre-btn" data-genre="House">🏠 House</button>
+                            <button class="genre-btn" data-genre="Techno">⚡ Techno</button>
+                            <button class="genre-btn" data-genre="Trance">🌀 Trance</button>
+                            <button class="genre-btn" data-genre="Progressive House">📈 Progressive House</button>
+                            <button class="genre-btn" data-genre="Deep House">🌊 Deep House</button>
+                            <button class="genre-btn" data-genre="Dubstep">💥 Dubstep</button>
+                            <button class="genre-btn" data-genre="Drum & Bass">🥁 D&B</button>
+                            <button class="genre-btn" data-genre="Ambient">☁️ Ambient</button>
+                        </div>
+
+                        <h6 class="mt-4"><i class="fas fa-comment"></i> Custom Response (Optional):</h6>
+                        <textarea id="customResponse" class="custom-response" placeholder="Add specific details about this classification, patterns you notice, or additional context..."></textarea>
+
+                        <button id="submitResponse" class="submit-btn">
+                            <i class="fas fa-brain"></i> Train the AI
+                        </button>
+
+                        <button id="getNewQuestion" class="submit-btn" style="background: linear-gradient(45deg, var(--neon-green), var(--neon-purple)); margin-left: 10px;">
+                            <i class="fas fa-question"></i> New Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Statistics -->
+            <div class="col-lg-4">
+                <div class="neon-card">
+                    <h4><i class="fas fa-graduation-cap"></i> Training Progress</h4>
+                    <div class="text-center">
+                        <div class="stats-number" id="totalSessions">0</div>
+                        <p>Total Training Sessions</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="stats-number" id="recentSessions" style="color: var(--neon-green);">0</div>
+                        <p>Sessions Today</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="stats-number" id="avgResponseTime" style="color: var(--neon-purple);">0s</div>
+                        <p>Avg Response Time</p>
+                    </div>
+                </div>
+
+                <div class="neon-card">
+                    <h4><i class="fas fa-lightbulb"></i> AI Intelligence Insights</h4>
+                    <div id="intelligenceInsights">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- System Statistics -->
+            <div class="col-lg-3">
+                <div class="neon-card">
+                    <h4><i class="fas fa-music"></i> Music Library</h4>
+                    <div class="stats-number" id="totalTracks">0</div>
+                    <p>Total Tracks Analyzed</p>
+                    <div class="progress mt-3" style="height: 8px;">
+                        <div id="tracksProgress" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3">
+                <div class="neon-card">
+                    <h4><i class="fas fa-user-music"></i> Artist Profiles</h4>
+                    <div class="stats-number" id="totalArtists">0</div>
+                    <p>Artists Profiled</p>
+                    <div class="progress mt-3" style="height: 8px;">
+                        <div id="artistsProgress" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3">
+                <div class="neon-card">
+                    <h4><i class="fas fa-tags"></i> Label Intelligence</h4>
+                    <div class="stats-number" id="totalLabels">0</div>
+                    <p>Labels Analyzed</p>
+                    <div class="progress mt-3" style="height: 8px;">
+                        <div id="labelsProgress" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3">
+                <div class="neon-card">
+                    <h4><i class="fas fa-brain"></i> Pattern Learning</h4>
+                    <div class="stats-number" id="totalPatterns">0</div>
+                    <p>Patterns Learned</p>
+                    <div class="progress mt-3" style="height: 8px;">
+                        <div id="patternsProgress" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Genre Distribution Chart -->
+            <div class="col-lg-6">
+                <div class="neon-card">
+                    <h4><i class="fas fa-chart-pie"></i> Genre Distribution</h4>
+                    <div class="chart-container">
+                        <canvas id="genreChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="col-lg-6">
+                <div class="neon-card">
+                    <h4><i class="fas fa-activity"></i> Recent AI Activity</h4>
+                    <div id="recentActivity" style="height: 300px; overflow-y: auto;">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Socket connection
+        const socket = io();
+        
+        // Current question data
+        let currentQuestion = null;
+        let selectedGenre = null;
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            loadInitialData();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Genre button selection
+            document.querySelectorAll('.genre-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedGenre = this.dataset.genre;
+                });
+            });
+
+            // Submit response
+            document.getElementById('submitResponse').addEventListener('click', submitTrainingResponse);
+
+            // Get new question
+            document.getElementById('getNewQuestion').addEventListener('click', function() {
+                socket.emit('request_question');
+            });
+
+            // Socket event listeners
+            socket.on('connect', function() {
+                console.log('Connected to Cultural Intelligence Dashboard');
+            });
+
+            socket.on('data_update', updateDashboard);
+            socket.on('new_question', displayNewQuestion);
+            socket.on('training_update', showTrainingFeedback);
+        }
+
+        // Load initial data
+        function loadInitialData() {
+            fetch('/api/data')
+                .then(response => response.json())
+                .then(data => {
+                    updateDashboard(data);
+                    displayCurrentQuestion(data.current_question);
+                })
+                .catch(error => {
+                    console.error('Error loading data:', error);
+                });
+        }
+
+        // Update dashboard with new data
+        function updateDashboard(data) {
+            // Update statistics
+            document.getElementById('totalTracks').textContent = data.total_tracks || 0;
+            document.getElementById('totalArtists').textContent = data.total_artists || 0;
+            document.getElementById('totalLabels').textContent = data.total_labels || 0;
+            document.getElementById('totalPatterns').textContent = data.total_patterns || 0;
+
+            // Update training stats
+            if (data.training_stats) {
+                document.getElementById('totalSessions').textContent = data.training_stats.total_sessions || 0;
+                document.getElementById('recentSessions').textContent = data.training_stats.recent_sessions || 0;
+                document.getElementById('avgResponseTime').textContent = data.training_stats.avg_response_time || '0s';
+            }
+
+            // Update progress bars
+            const maxTracks = Math.max(data.total_tracks, 100);
+            document.getElementById('tracksProgress').style.width = `${(data.total_tracks / maxTracks) * 100}%`;
+            document.getElementById('artistsProgress').style.width = `${Math.min((data.total_artists / 50) * 100, 100)}%`;
+            document.getElementById('labelsProgress').style.width = `${Math.min((data.total_labels / 30) * 100, 100)}%`;
+            document.getElementById('patternsProgress').style.width = `${Math.min((data.total_patterns / 100) * 100, 100)}%`;
+
+            // Update charts
+            if (data.genre_distribution) {
+                updateGenreChart(data.genre_distribution);
+            }
+
+            // Update intelligence insights
+            if (data.intelligence_insights) {
+                updateIntelligenceInsights(data.intelligence_insights);
+            }
+
+            // Update recent activity
+            if (data.recent_activity) {
+                updateRecentActivity(data.recent_activity);
+            }
+        }
+
+        // Display current AI question
+        function displayCurrentQuestion(question) {
+            if (!question) return;
+            
+            currentQuestion = question;
+            
+            document.getElementById('currentQuestion').innerHTML = `
+                <div class="question-meta">
+                    <i class="fas fa-robot"></i> <strong>AI asks:</strong> Question ID ${question.id} | Type: ${question.type}
+                </div>
+                <p><strong>${question.question}</strong></p>
+                <p class="question-meta">
+                    <i class="fas fa-info-circle"></i> ${question.track_info || 'Context: ' + JSON.stringify(question.context)}
+                </p>
+            `;
+            
+            document.getElementById('responseSection').style.display = 'block';
+            document.getElementById('questionType').textContent = question.type;
+            document.getElementById('uncertaintyScore').textContent = Math.round((question.uncertainty_score || 0.65) * 100);
+            document.getElementById('uncertaintyFill').style.width = `${(question.uncertainty_score || 0.65) * 100}%`;
+        }
+
+        // Display new question from socket
+        function displayNewQuestion(question) {
+            displayCurrentQuestion(question);
+        }
+
+        // Submit training response
+        function submitTrainingResponse() {
+            if (!selectedGenre && !document.getElementById('customResponse').value.trim()) {
+                alert('Please select a genre or provide a custom response!');
+                return;
+            }
+
+            const responseData = {
+                question_id: currentQuestion ? currentQuestion.id : 'demo',
+                question: currentQuestion ? currentQuestion.question : 'Demo question',
+                question_type: currentQuestion ? currentQuestion.type : 'demo',
+                genre: selectedGenre,
+                response_text: document.getElementById('customResponse').value.trim(),
+                context: currentQuestion ? currentQuestion.context : {},
+                confidence: selectedGenre ? 0.85 : 0.70,
+                timestamp: new Date().toISOString()
+            };
+
+            fetch('/api/training/respond', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(responseData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showTrainingFeedback({
+                        message: `✅ Thanks! Learned: ${selectedGenre || 'Custom feedback'}`,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    // Reset form
+                    document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('selected'));
+                    document.getElementById('customResponse').value = '';
+                    selectedGenre = null;
+                    
+                    // Get new question
+                    socket.emit('request_question');
+                } else {
+                    alert('Error processing response: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting response:', error);
+                alert('Error submitting response');
+            });
+        }
+
+        // Show training feedback
+        function showTrainingFeedback(data) {
+            const feedback = document.getElementById('trainingFeedback');
+            document.getElementById('feedbackText').textContent = data.message;
+            feedback.classList.add('show');
+            
+            setTimeout(() => {
+                feedback.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize charts
+        let genreChart = null;
+
+        function initializeCharts() {
+            const ctx = document.getElementById('genreChart').getContext('2d');
+            genreChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        backgroundColor: [
+                            '#00ffff', '#ff00ff', '#00ff00', '#ffff00',
+                            '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#000'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update genre chart
+        function updateGenreChart(genreData) {
+            if (!genreChart) return;
+            
+            const labels = Object.keys(genreData);
+            const data = Object.values(genreData);
+            
+            genreChart.data.labels = labels;
+            genreChart.data.datasets[0].data = data;
+            genreChart.update();
+        }
+
+        // Update intelligence insights
+        function updateIntelligenceInsights(insights) {
+            const container = document.getElementById('intelligenceInsights');
+            container.innerHTML = insights.map(insight => 
+                `<div class="activity-item">${insight}</div>`
+            ).join('');
+        }
+
+        // Update recent activity
+        function updateRecentActivity(activities) {
+            const container = document.getElementById('recentActivity');
+            container.innerHTML = activities.map(activity => 
+                `<div class="activity-item">
+                    <i class="fas fa-file-audio"></i> <strong>${activity.filename}</strong><br>
+                    <small>${activity.file_size_mb}MB • ${new Date(activity.processed_at).toLocaleString()}</small>
+                </div>`
+            ).join('');
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            socket.emit('request_update');
+        }, 30000);
+    </script>
+</body>
+</html>
