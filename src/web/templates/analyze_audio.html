@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Audio Analysis - Electronic Music Taxonomy Database{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-waveform-lines"></i> Audio Analysis</h2>
+<p class="lead">Upload an audio file to analyze its characteristics and identify potential genres.</p>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-upload"></i> Upload Audio File</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> 
+                    <strong>Coming Soon!</strong> Audio analysis functionality is currently under development.
+                    This feature will use machine learning to analyze audio characteristics and suggest matching genres.
+                </div>
+                
+                <form>
+                    <div class="mb-3">
+                        <label for="audioFile" class="form-label">Select Audio File</label>
+                        <input type="file" class="form-control" id="audioFile" accept="audio/*" disabled>
+                        <div class="form-text">Supported formats: MP3, WAV, FLAC, OGG (max 10MB)</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" disabled>
+                        <i class="fas fa-analyze"></i> Analyze Audio
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-lightbulb"></i> What We Analyze</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> <strong>Tempo (BPM)</strong><br>
+                        <small class="text-muted">Beat detection and tempo analysis</small></li>
+                    <li><i class="fas fa-check text-success"></i> <strong>Key & Harmony</strong><br>
+                        <small class="text-muted">Musical key and chord progression detection</small></li>
+                    <li><i class="fas fa-check text-success"></i> <strong>Spectral Features</strong><br>
+                        <small class="text-muted">Frequency analysis and timbre identification</small></li>
+                    <li><i class="fas fa-check text-success"></i> <strong>Rhythm Patterns</strong><br>
+                        <small class="text-muted">Drum pattern and rhythmic structure analysis</small></li>
+                    <li><i class="fas fa-check text-success"></i> <strong>Genre Classification</strong><br>
+                        <small class="text-muted">AI-powered genre identification and similarity matching</small></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-bar"></i> Sample Analysis</h5>
+            </div>
+            <div class="card-body">
+                <h6>Example Output:</h6>
+                <div class="mb-2">
+                    <small class="text-muted">Detected BPM:</small><br>
+                    <strong>128 BPM</strong>
+                </div>
+                <div class="mb-2">
+                    <small class="text-muted">Detected Key:</small><br>
+                    <strong>A Minor</strong>
+                </div>
+                <div class="mb-2">
+                    <small class="text-muted">Predicted Genres:</small><br>
+                    <span class="badge bg-primary me-1">Progressive House</span>
+                    <span class="badge bg-secondary me-1">Deep House</span>
+                    <span class="badge bg-success">Tech House</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

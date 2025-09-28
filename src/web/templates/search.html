@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Search - Electronic Music Taxonomy Database{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-search"></i> Advanced Search</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-filter"></i> Search Filters</h5>
+            </div>
+            <div class="card-body">
+                <form method="GET">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="q" class="form-label">Genre Name or Description</label>
+                            <input type="text" class="form-control search-box" id="q" name="q" 
+                                   value="{{ query_text }}" placeholder="Enter genre name or keywords...">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="bpm_min" class="form-label">Min BPM</label>
+                            <input type="number" class="form-control" id="bpm_min" name="bpm_min" 
+                                   value="{{ bpm_min }}" placeholder="e.g. 120">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="bpm_max" class="form-label">Max BPM</label>
+                            <input type="number" class="form-control" id="bpm_max" name="bpm_max" 
+                                   value="{{ bpm_max }}" placeholder="e.g. 140">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="year_min" class="form-label">From Year</label>
+                            <input type="number" class="form-control" id="year_min" name="year_min" 
+                                   value="{{ year_min }}" placeholder="e.g. 1970">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="year_max" class="form-label">To Year</label>
+                            <input type="number" class="form-control" id="year_max" name="year_max" 
+                                   value="{{ year_max }}" placeholder="e.g. 2000">
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                        <a href="{{ url_for('search') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Clear
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-lightbulb"></i> Search Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> Use keywords like "house", "techno", "ambient"</li>
+                    <li><i class="fas fa-check text-success"></i> Filter by BPM range for tempo-specific genres</li>
+                    <li><i class="fas fa-check text-success"></i> Search by decade to explore genre evolution</li>
+                    <li><i class="fas fa-check text-success"></i> Combine filters for precise results</li>
+                </ul>
+                
+                <hr>
+                
+                <h6>Popular BPM Ranges:</h6>
+                <small class="text-muted">
+                    <strong>Ambient:</strong> 60-90 BPM<br>
+                    <strong>House:</strong> 120-130 BPM<br>
+                    <strong>Techno:</strong> 120-150 BPM<br>
+                    <strong>Drum & Bass:</strong> 160-180 BPM
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results -->
+{% if results %}
+<div class="mt-4">
+    <h4><i class="fas fa-list-ul"></i> Search Results ({{ results|length }})</h4>
+    <div class="row">
+        {% for genre in results %}
+        <div class="col-md-6 mb-3">
+            <div class="card genre-card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ url_for('genre_detail', genre_id=genre.id) }}" class="text-decoration-none">
+                            {{ genre.name }}
+                        </a>
+                    </h5>
+                    <p class="card-text">
+                        {% if genre.description %}
+                            {{ genre.description[:100] }}{% if genre.description|length > 100 %}...{% endif %}
+                        {% else %}
+                            <em>No description available</em>
+                        {% endif %}
+                    </p>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            {% if genre.origin_year %}
+                            <i class="fas fa-calendar"></i> {{ genre.origin_year }}
+                            {% endif %}
+                            {% if genre.bpm_typical %}
+                            | <i class="fas fa-tachometer-alt"></i> {{ genre.bpm_typical }} BPM
+                            {% endif %}
+                        </small>
+                        <a href="{{ url_for('genre_detail', genre_id=genre.id) }}" class="btn btn-sm btn-outline-primary">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% elif query_text or bpm_min or bpm_max or year_min or year_max %}
+<div class="mt-4 text-center py-5">
+    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+    <h4 class="text-muted">No results found</h4>
+    <p>Try adjusting your search criteria or <a href="{{ url_for('list_genres') }}">browse all genres</a>.</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Electronic Music Taxonomy Database{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .genre-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .genre-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .audio-feature {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            min-height: 120px;
+        }
+        
+        .hero-section {
+            margin-bottom: 2rem;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        .btn {
+            border-radius: 8px;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-top: 3rem;
+        }
+        
+        .timeline-item {
+            border-left: 3px solid #667eea;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .search-box {
+            border-radius: 25px;
+            border: 2px solid #667eea;
+        }
+        
+        .search-box:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-music"></i> Electronic Music Taxonomy DB
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('list_genres') }}">
+                            <i class="fas fa-list"></i> Browse Genres
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('timeline') }}">
+                            <i class="fas fa-clock"></i> Timeline
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('search') }}">
+                            <i class="fas fa-search"></i> Search
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/genres">
+                            <i class="fas fa-code"></i> API
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-database"></i> Electronic Music Taxonomy Database</h5>
+                    <p class="mb-1">A comprehensive database of electronic music genres based on Wikipedia's extensive list.</p>
+                    <p class="mb-0">Enhanced with audio analysis and machine learning capabilities.</p>
+                </div>
+                <div class="col-md-3">
+                    <h6>Features</h6>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check"></i> Genre Classification</li>
+                        <li><i class="fas fa-check"></i> Audio Analysis</li>
+                        <li><i class="fas fa-check"></i> Historical Timeline</li>
+                        <li><i class="fas fa-check"></i> Mixing Compatibility</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Resources</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/api/genres" class="text-white-50"><i class="fas fa-code"></i> API Documentation</a></li>
+                        <li><a href="{{ url_for('timeline') }}" class="text-white-50"><i class="fas fa-clock"></i> Timeline View</a></li>
+                        <li><a href="{{ url_for('search') }}" class="text-white-50"><i class="fas fa-search"></i> Advanced Search</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 Electronic Music Taxonomy Database. Built with Flask & Python.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <small>Data source: Wikipedia's List of Electronic Music Genres</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
