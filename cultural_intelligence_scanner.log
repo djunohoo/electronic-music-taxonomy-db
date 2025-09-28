@@ -1,0 +1,30 @@
+2025-09-28 11:52:04,980 - cultural_database_client - ERROR - Error counting tracks: requests.api.request() got multiple values for keyword argument 'headers'
+2025-09-28 11:52:04,984 - cultural_database_client - ERROR - Error counting patterns: requests.api.request() got multiple values for keyword argument 'headers'
+2025-09-28 11:52:05,093 - cultural_database_client - ERROR - Error counting tracks: requests.api.request() got multiple values for keyword argument 'headers'
+2025-09-28 11:52:05,094 - cultural_database_client - ERROR - Error counting duplicates: requests.api.request() got multiple values for keyword argument 'headers'
+2025-09-28 11:52:05,095 - cultural_database_client - ERROR - Error counting artist profiles: requests.api.request() got multiple values for keyword argument 'headers'
+2025-09-28 11:52:05,096 - cultural_database_client - ERROR - Error counting patterns: requests.api.request() got multiple values for keyword argument 'headers'
+2025-09-28 12:35:00,302 - cultural_database_client - ERROR - Supabase API error: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:00,303 - cultural_database_client - ERROR - Response: {"code":"22P05","details":"\\u0000 cannot be converted to text.","hint":null,"message":"unsupported Unicode escape sequence"}
+2025-09-28 12:35:00,304 - cultural_database_client - ERROR - Error creating discovered track: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:02,710 - cultural_database_client - ERROR - Supabase API error: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:02,711 - cultural_database_client - ERROR - Response: {"code":"22P05","details":"\\u0000 cannot be converted to text.","hint":null,"message":"unsupported Unicode escape sequence"}
+2025-09-28 12:35:02,711 - cultural_database_client - ERROR - Error creating discovered track: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:03,128 - cultural_database_client - ERROR - Supabase API error: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:03,129 - cultural_database_client - ERROR - Response: {"code":"22P05","details":"\\u0000 cannot be converted to text.","hint":null,"message":"unsupported Unicode escape sequence"}
+2025-09-28 12:35:03,130 - cultural_database_client - ERROR - Error creating discovered track: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:05,790 - cultural_database_client - ERROR - Supabase API error: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:05,791 - cultural_database_client - ERROR - Response: {"code":"22P05","details":"\\u0000 cannot be converted to text.","hint":null,"message":"unsupported Unicode escape sequence"}
+2025-09-28 12:35:05,792 - cultural_database_client - ERROR - Error creating discovered track: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:07,021 - cultural_database_client - ERROR - Supabase API error: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:07,022 - cultural_database_client - ERROR - Response: {"code":"22P05","details":"\\u0000 cannot be converted to text.","hint":null,"message":"unsupported Unicode escape sequence"}
+2025-09-28 12:35:07,022 - cultural_database_client - ERROR - Error creating discovered track: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:08,183 - cultural_database_client - ERROR - Supabase API error: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:08,184 - cultural_database_client - ERROR - Response: {"code":"22P05","details":"\\u0000 cannot be converted to text.","hint":null,"message":"unsupported Unicode escape sequence"}
+2025-09-28 12:35:08,185 - cultural_database_client - ERROR - Error creating discovered track: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:12,662 - cultural_database_client - ERROR - Supabase API error: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:12,663 - cultural_database_client - ERROR - Response: {"code":"22P05","details":"\\u0000 cannot be converted to text.","hint":null,"message":"unsupported Unicode escape sequence"}
+2025-09-28 12:35:12,664 - cultural_database_client - ERROR - Error creating discovered track: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:13,587 - cultural_database_client - ERROR - Supabase API error: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-28 12:35:13,588 - cultural_database_client - ERROR - Response: {"code":"22P05","details":"\\u0000 cannot be converted to text.","hint":null,"message":"unsupported Unicode escape sequence"}
+2025-09-28 12:35:13,588 - cultural_database_client - ERROR - Error creating discovered track: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks

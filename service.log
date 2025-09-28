@@ -1,0 +1,8 @@
+[2025-09-28 11:05:37] Cultural Intelligence Service started
+[2025-09-28 11:05:37] API Script: E:\#GITHUB-REPOS\electronic-music-taxonomy-db\metacrate_api.py
+[2025-09-28 11:05:37] Health Check URL: http://172.22.17.37:5000/api/v3.2/health
+[2025-09-28 11:05:37] Check Interval: 3600 seconds
+[2025-09-28 11:05:37] Starting API from directory: E:\#GITHUB-REPOS\electronic-music-taxonomy-db
+[2025-09-28 11:05:37] API process started with PID: 12668
+[2025-09-28 11:05:37] Scheduler process started with PID: 6640
+[2025-09-28 11:09:13] Service stop requested

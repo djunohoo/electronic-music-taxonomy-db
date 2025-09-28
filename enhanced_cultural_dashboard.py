@@ -12,7 +12,7 @@ import time
 import threading
 import random
 from datetime import datetime, timedelta
-from cultural_database_client import CulturalDatabaseClient
+from cultural_database_client import EnhancedCulturalDatabaseClient as CulturalDatabaseClient
 import logging
 
 # Configure logging
@@ -177,33 +177,11 @@ class EnhancedDashboardData:
     
     def get_pending_training_questions(self):
         """Get pending training questions for AI learning."""
-        try:
-            response = db_client.supabase.table('cultural_training_queue').select('*').eq('status', 'pending').order('priority', desc=True).limit(3).execute()
-            return response.data if response.data else []
-        except Exception as e:
-            logger.error(f"Error getting training questions: {e}")
-            return []
+        return db_client.get_training_questions()
     
     def get_training_stats(self):
         """Get training session statistics."""
-        try:
-            # Total sessions
-            total_response = db_client.supabase.table('cultural_training_sessions').select('id', count='exact').execute()
-            total_sessions = total_response.count or 0
-            
-            # Recent sessions (last 24 hours)
-            yesterday = (datetime.now() - timedelta(hours=24)).isoformat()
-            recent_response = db_client.supabase.table('cultural_training_sessions').select('id', count='exact').gte('asked_at', yesterday).execute()
-            recent_sessions = recent_response.count or 0
-            
-            return {
-                'total_sessions': total_sessions,
-                'recent_sessions': recent_sessions,
-                'avg_response_time': '2.3s'  # Could calculate from actual data
-            }
-        except Exception as e:
-            logger.error(f"Error getting training stats: {e}")
-            return {'total_sessions': 0, 'recent_sessions': 0, 'avg_response_time': '0s'}
+        return db_client.get_training_stats()
     
     def generate_ai_question(self):
         """Generate an intelligent training question."""
@@ -232,6 +210,12 @@ class EnhancedDashboardData:
                 this_track = context.get('this_track_genre', 'House')
                 question_text = f"Label '{label}' usually releases {usual}, but this track seems like {this_track}. Correct classification?"
             
+            elif question_data['question_type'] == 'tempo_analysis':
+                bpm = context.get('bpm_detected', 128)
+                genres = context.get('genres', ['House', 'Techno'])
+                reason = context.get('reason', 'Tempo classification uncertain')
+                question_text = f"Track at {bpm} BPM could be {genres[0]} or {genres[1]}. {reason}. What's the correct genre?"
+            
             else:
                 question_text = "I need your expertise to improve my accuracy. Can you help train me?"
             
@@ -258,29 +242,37 @@ class EnhancedDashboardData:
     def process_training_response(self, question_id, response_data):
         """Process human training response."""
         try:
-            # Record the training session
+            # Record training session in live database
             session_data = {
+                'question_id': question_id,
                 'question_type': response_data.get('question_type', 'user_feedback'),
                 'question_text': response_data.get('question', ''),
-                'context_data': json.dumps(response_data.get('context', {})),
-                'human_response': json.dumps(response_data),
+                'human_response': response_data,
                 'response_text': response_data.get('response_text', ''),
                 'answered_at': datetime.now().isoformat(),
-                'status': 'completed'
+                'feedback_quality': response_data.get('quality_rating', 5),
+                'response_time_ms': response_data.get('response_time', 2000)
             }
             
-            # Insert training session
-            db_client.supabase.table('cultural_training_sessions').insert(session_data).execute()
+            # Save to live database
+            success = db_client.create_training_session(session_data)
             
-            # Mark question as processed if it exists
-            if question_id and question_id != 'demo':
-                db_client.supabase.table('cultural_training_queue').update({
-                    'status': 'processed',
-                    'processed_at': datetime.now().isoformat()
-                }).eq('id', question_id).execute()
+            if success and question_id:
+                # Mark question as processed in live database
+                db_client.update_training_queue(question_id, {
+                    'status': 'completed',
+                    'completed_at': datetime.now().isoformat(),
+                    'human_response': response_data
+                })
             
-            logger.info(f"Training response processed: {response_data.get('genre', 'feedback')}")
-            return True
+            # Log the learning
+            genre = response_data.get('genre', 'Unknown')
+            confidence = response_data.get('confidence', 0.8)
+            
+            logger.info(f"🎓 LIVE AI Learning: Question {question_id} → Genre: {genre} (Confidence: {confidence})")
+            logger.info(f"📊 Training session recorded in live database")
+            
+            return success
             
         except Exception as e:
             logger.error(f"Error processing training response: {e}")
@@ -291,8 +283,8 @@ dashboard_data = EnhancedDashboardData()
 
 @app.route('/')
 def dashboard():
-    """Main dashboard page."""
-    return render_template('enhanced_dashboard.html')
+    """Main live training dashboard optimized for Rekordbox workflow."""
+    return render_template('live_training_dashboard.html')
 
 @app.route('/api/data')
 def get_dashboard_data():
@@ -321,6 +313,19 @@ def handle_training_response():
             
     except Exception as e:
         logger.error(f"Training response error: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/api/training/question')
+def get_training_question():
+    """Get next training question for AI learning."""
+    try:
+        question = dashboard_data.generate_ai_question()
+        if question:
+            return jsonify({'status': 'success', 'question': question})
+        else:
+            return jsonify({'status': 'success', 'question': None, 'message': 'No pending questions'})
+    except Exception as e:
+        logger.error(f"Error getting training question: {e}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @socketio.on('connect')
