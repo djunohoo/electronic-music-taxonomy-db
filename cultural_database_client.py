@@ -18,11 +18,7 @@ class CulturalDatabaseClient:
     def __init__(self, config_file: str = "taxonomy_config.json"):
         """Initialize client with configuration."""
         self.config = self._load_config(config_file)
-        self.base_    def get_training_questions(self, limit: int = 5) -> List[Dict]:
-        """Get training questions with lowest confidence tracks from user's library."""
-        try:
-            # Get tracks with lowest confidence for targeted training
-            tracks = self.get_low_confidence_tracks_for_training(limit) f"{self.config['supabase']['url']}/rest/v1"
+        self.base_url = f"{self.config['supabase']['url']}/rest/v1"
         self.headers = {
             "apikey": self.config["supabase"]["service_role_key"],
             "Authorization": f"Bearer {self.config['supabase']['service_role_key']}",
@@ -560,23 +556,42 @@ class CulturalDatabaseClient:
     # ================================
     
     def get_low_confidence_tracks_for_training(self, limit: int = 5) -> List[Dict]:
-        """Get tracks that need classification - prioritizing unprocessed ones."""
+        """Get tracks with lowest confidence scores and identify most impactful missing information."""
         try:
-            # Get tracks ordered by processing status - unprocessed first
-            response = self._make_request('GET', f'cultural_tracks?select=id,filename,file_path,raw_metadata,folder_path,processing_status&order=id.desc&limit={limit}')
+            # Get tracks with their classification data, ordered by confidence (lowest first)
+            # Use correct column names from actual schema
+            query_params = [
+                "select=id,filename,file_path,raw_metadata,folder_path,processed_at,processing_version",
+                f"order=id.desc",
+                f"limit={limit * 3}"  # Get more tracks to filter properly
+            ]
+            
+            response = self._make_request('GET', f'cultural_tracks?{"&".join(query_params)}')
             tracks = response.json() or []
             
             if not tracks:
                 logger.warning("No tracks found in cultural_tracks table")
                 return []
             
-            logger.info(f"Found {len(tracks)} tracks for training")
-            return tracks
+            # Get classifications for these tracks to analyze confidence
+            track_ids = [str(track['id']) for track in tracks]
+            if track_ids:
+                classifications_response = self._make_request('GET', 
+                    f'cultural_classifications?track_id=in.({",".join(track_ids)})&select=track_id,overall_confidence,genre_confidence,genre,artist,track_name,needs_review,human_validated')
+                classifications = {c['track_id']: c for c in (classifications_response.json() or [])}
+            else:
+                classifications = {}
             
-            # Format tracks for training display
-            formatted_tracks = []
+            # Analyze tracks for confidence and missing information impact
+            analyzed_tracks = []
             for track in tracks:
-                # Extract artist and album safely
+                classification = classifications.get(track['id'], None)  # Use None instead of {}
+                
+                # Calculate confidence score (0 if no classification exists)
+                overall_confidence = classification.get('overall_confidence', 0.0) if classification else 0.0
+                genre_confidence = classification.get('genre_confidence', 0.0) if classification else 0.0
+                
+                # Extract metadata safely
                 metadata = track.get('raw_metadata', {})
                 artist = 'Unknown'
                 album = 'Unknown'
@@ -595,6 +610,9 @@ class CulturalDatabaseClient:
                     elif isinstance(album_data, str):
                         album = album_data
                 
+                # Analyze missing information and calculate impact scores
+                missing_analysis = self._analyze_missing_information_impact(track, classification, metadata)
+                
                 formatted_track = {
                     'id': track['id'],
                     'title': track.get('filename', 'Unknown Title').replace('.mp3', '').replace('.flac', '').replace('.wav', ''),
@@ -602,67 +620,442 @@ class CulturalDatabaseClient:
                     'folder_context': track.get('folder_path', ''),
                     'metadata': metadata,
                     'artist': artist,
-                    'album': album
+                    'album': album,
+                    'overall_confidence': overall_confidence,
+                    'genre_confidence': genre_confidence,
+                    'needs_review': classification.get('needs_review', True) if classification else True,
+                    'human_validated': classification.get('human_validated', False) if classification else False,
+                    'missing_analysis': missing_analysis
                 }
-                formatted_tracks.append(formatted_track)
-                
-            return formatted_tracks
+                analyzed_tracks.append(formatted_track)
+            
+            # Sort by confidence score (lowest first) and impact score (highest first)
+            analyzed_tracks.sort(key=lambda x: (x['overall_confidence'], -x['missing_analysis']['impact_score']))
+            
+            # Return the lowest confidence tracks up to the limit
+            result_tracks = analyzed_tracks[:limit]
+            logger.info(f"Found {len(result_tracks)} low-confidence tracks for training")
+            
+            return result_tracks
+            
         except Exception as e:
-            logger.error(f"Error getting random tracks: {e}")
+            logger.error(f"Error getting low-confidence tracks: {e}")
             return []
-    
-    def get_training_questions(self, limit: int = 5, limit: int = 5) -> List[Dict]:
-        """Get training questions with actual tracks from user's library."""
+            
+    def _analyze_missing_information_impact(self, track: Dict, classification: Dict, metadata: Dict) -> Dict:
+        """Analyze what information is missing and calculate impact score for training questions."""
+        # Check if any classification exists (check for empty dict or None)
+        if not classification or len(classification) == 0:
+            impact_score = 100  # Highest impact - no classification at all
+            question_type = "classification_needed"
+            priority_field = "genre"
+            explanation = "Track has no classification data - needs basic genre identification"
+            missing_fields = []
+        else:
+            # Classification exists - start with defaults for classified track
+            impact_score = 0
+            question_type = "human_validation"
+            priority_field = "validation"
+            explanation = "Track is well classified"
+            # Classification exists, analyze what's missing or uncertain
+            missing_fields = []
+            
+            # Check genre classification quality
+            if not classification.get('genre') or classification.get('genre_confidence', 0) < 0.6:
+                missing_fields.append(('genre', 40))
+                if classification.get('genre_confidence', 0) < 0.3:
+                    impact_score += 40
+                    question_type = "genre_refinement"
+                    priority_field = "genre"
+                    explanation = "Genre classification has very low confidence"
+                    
+            # Check artist information quality  
+            if not classification.get('artist'):
+                missing_fields.append(('artist', 25))
+                if impact_score < 25:
+                    impact_score = 25
+                    question_type = "metadata_correction"
+                    priority_field = "artist"
+                    explanation = "Artist information is missing"
+                    
+            # Check track name quality
+            if not classification.get('track_name'):
+                missing_fields.append(('track_name', 20))
+                if impact_score < 20:
+                    impact_score = 20
+                    question_type = "metadata_correction" 
+                    priority_field = "track_name"
+                    explanation = "Track name is missing"
+                    
+            # Check if human validation is needed
+            if not classification.get('human_validated', False) and classification.get('needs_review', True):
+                impact_score += 15
+                if question_type == "classification_needed":
+                    question_type = "human_validation"
+                    priority_field = "validation"
+                    explanation = "AI classification needs human validation"
+                    
+            # Overall confidence penalty
+            overall_conf = classification.get('overall_confidence', 0)
+            if overall_conf < 0.5:
+                impact_score += 20
+            elif overall_conf < 0.7:
+                impact_score += 10
+                
+            return {
+                'impact_score': min(impact_score, 100),  # Cap at 100
+                'question_type': question_type,
+                'priority_field': priority_field,
+                'explanation': explanation,
+                'missing_fields': missing_fields if 'missing_fields' in locals() else [],
+                'confidence_penalty': overall_conf if 'overall_conf' in locals() else 0
+            }
+            
+    def _get_known_genres(self) -> List[str]:
+        """Get list of known genres for button options."""
         try:
-            # Get random tracks from the user's library first
-            tracks = self.get_random_tracks_for_training(limit)
+            response = self._make_request('GET', 'cultural_classifications?select=genre&order=genre.asc')
+            classifications = response.json() or []
+            
+            # Extract unique genres, filter out empty/null values
+            genres = set()
+            for c in classifications:
+                genre = c.get('genre')
+                if genre and genre.strip() and genre.strip() != 'Other':
+                    genres.add(genre.strip())
+            
+            # Add common electronic music genres that might not be in database yet
+            common_genres = {
+                'House', 'Tech House', 'Deep House', 'Progressive House', 'Electro House',
+                'Techno', 'Minimal Techno', 'Hard Techno', 
+                'Trance', 'Progressive Trance', 'Uplifting Trance',
+                'Drum & Bass', 'Liquid DnB', 'Neurofunk',
+                'Dubstep', 'Future Bass', 'Trap',
+                'Ambient', 'Downtempo', 'Chillout',
+                'Breaks', 'Breakbeat', 'Nu Disco', 'Funk'
+            }
+            
+            genres.update(common_genres)
+            return sorted(list(genres))
+            
+        except Exception as e:
+            logger.error(f"Error getting known genres: {e}")
+            # Fallback to common genres
+            return ['House', 'Techno', 'Trance', 'Drum & Bass', 'Dubstep', 'Ambient', 'Breaks']
+            
+    def _get_known_subgenres(self, parent_genre: str = None) -> List[str]:
+        """Get list of known subgenres, optionally filtered by parent genre."""
+        try:
+            if parent_genre:
+                # Get subgenres for specific parent genre
+                response = self._make_request('GET', f'cultural_classifications?genre=eq.{parent_genre}&select=subgenre&order=subgenre.asc')
+            else:
+                # Get all subgenres
+                response = self._make_request('GET', 'cultural_classifications?select=subgenre&order=subgenre.asc')
+                
+            classifications = response.json() or []
+            
+            # Extract unique subgenres
+            subgenres = set()
+            for c in classifications:
+                subgenre = c.get('subgenre')
+                if subgenre and subgenre.strip():
+                    subgenres.add(subgenre.strip())
+            
+            # Add common subgenres based on parent genre
+            common_subgenres = self._get_common_subgenres_for_genre(parent_genre) if parent_genre else []
+            subgenres.update(common_subgenres)
+            
+            return sorted(list(subgenres))
+            
+        except Exception as e:
+            logger.error(f"Error getting known subgenres: {e}")
+            return []
+            
+    def _get_common_subgenres_for_genre(self, genre: str) -> List[str]:
+        """Get common subgenres for a specific genre."""
+        subgenre_map = {
+            'House': ['Deep House', 'Tech House', 'Progressive House', 'Electro House', 'Funky House', 
+                     'Soulful House', 'Jackin House', 'Disco House', 'Tribal House', 'Afro House'],
+            'Techno': ['Minimal Techno', 'Hard Techno', 'Industrial Techno', 'Dub Techno', 
+                      'Progressive Techno', 'Acid Techno', 'Detroit Techno'],
+            'Trance': ['Progressive Trance', 'Uplifting Trance', 'Psy Trance', 'Tech Trance', 
+                      'Vocal Trance', 'Hard Trance', 'Acid Trance'],
+            'Drum & Bass': ['Liquid DnB', 'Neurofunk', 'Jump Up', 'Hardstep', 'Jungle', 
+                           'Intelligent DnB', 'Darkstep'],
+            'Dubstep': ['Brostep', 'Future Bass', 'Melodic Dubstep', 'Riddim', 'Chillstep'],
+            'Breaks': ['Breakbeat', 'Nu Skool Breaks', 'Progressive Breaks', 'Electro Breaks'],
+            'Ambient': ['Dark Ambient', 'Drone', 'Space Ambient', 'New Age', 'Chillout']
+        }
+        
+        return subgenre_map.get(genre, [])
+        
+    def generate_subgenre_followup_question(self, track: Dict, selected_genre: str) -> Dict:
+        """Generate follow-up subgenre question after genre selection."""
+        title = track.get('title', 'this track')
+        artist = track.get('artist', 'Unknown Artist')
+        
+        subgenre_options = self._get_known_subgenres(selected_genre)
+        
+        return {
+            'question': f"🎯 Great! You classified '{title}' as {selected_genre}. What specific subgenre would you say this is?",
+            'type': 'subgenre_selection',
+            'options': subgenre_options,
+            'allow_custom': True,
+            'follow_up': None,
+            'context': {
+                'stage': 'subgenre',
+                'parent_genre': selected_genre,
+                'track_id': track.get('id')
+            }
+        }
+        
+    def get_training_questions(self, limit: int = 5) -> List[Dict]:
+        """Get training questions based on lowest confidence tracks with impact analysis."""
+        try:
+            # Get low-confidence tracks with impact analysis
+            tracks = self.get_low_confidence_tracks_for_training(limit)
             
             if not tracks:
-                logger.warning("No tracks found in library for training")
+                logger.warning("No low-confidence tracks found for training")
                 return []
                 
-            # Try to get existing training questions from queue
-            response = self._make_request('GET', f'cultural_training_queue?status=eq.pending&order=priority.desc,created_at.asc&limit={limit}')
-            queue_questions = response.json() or []
-            
-            # Create training questions with real tracks
+            # Create training questions based on impact analysis
             training_questions = []
             
-            for i, track in enumerate(tracks):
-                # Use queue question if available, otherwise create new one
-                if i < len(queue_questions):
-                    question = queue_questions[i].copy()
-                    question['context'] = {
-                        **question.get('context', {}),
-                        'track_data': track
-                    }
-                else:
-                    # Create new question with track
-                    question = {
-                        'id': f"track_{track['id']}_{int(datetime.now().timestamp())}",
-                        'question': f"Listen to '{track['title']}' by {track['artist']} and classify its genre",
-                        'context': {
-                            'track_data': track,
-                            'question_type': 'genre_classification'
-                        },
-                        'priority': 1,
-                        'status': 'pending'
-                    }
+            for track in tracks:
+                missing_analysis = track.get('missing_analysis', {})
+                question_type = missing_analysis.get('question_type', 'classification_needed')
+                priority_field = missing_analysis.get('priority_field', 'genre')
+                explanation = missing_analysis.get('explanation', 'Needs classification')
+                impact_score = missing_analysis.get('impact_score', 50)
+                
+                # Generate question based on the most impactful missing information
+                question_data = self._generate_targeted_question(track, question_type, priority_field)
+                
+                question = {
+                    'id': f"impact_track_{track['id']}_{int(datetime.now().timestamp())}",
+                    'question': question_data,
+                    'context': {
+                        'track_data': track,
+                        'question_type': question_type,
+                        'priority_field': priority_field,
+                        'impact_explanation': explanation,
+                        'impact_score': impact_score,
+                        'confidence_info': {
+                            'overall': track.get('overall_confidence', 0),
+                            'genre': track.get('genre_confidence', 0),
+                            'needs_review': track.get('needs_review', True),
+                            'human_validated': track.get('human_validated', False)
+                        }
+                    },
+                    'priority': impact_score,
+                    'status': 'pending'
+                }
                 training_questions.append(question)
+            
+            # Sort by impact score (highest first)
+            training_questions.sort(key=lambda x: x['priority'], reverse=True)
             
             return training_questions
             
         except Exception as e:
             logger.error(f"Error getting training questions: {e}")
-            # Fallback to just getting tracks
+            # Fallback to basic tracks
             tracks = self.get_low_confidence_tracks_for_training(limit)
             return [{
                 'id': f"fallback_track_{track['id']}",
-                'question': f"Classify the genre of '{track['title']}' by {track['artist']}",
+                'question': {
+                    'question': f"What genre is '{track['title']}' by {track['artist']}?",
+                    'type': 'genre_selection',
+                    'options': self._get_known_genres(),
+                    'allow_custom': True,
+                    'follow_up': 'subgenre_required',
+                    'context': {'stage': 'genre'}
+                },
                 'context': {'track_data': track},
-                'priority': 1,
+                'priority': 50,
                 'status': 'pending'
             } for track in tracks] if tracks else []
+            
+    def process_training_response(self, question_id: str, response_data: Dict) -> Optional[Dict]:
+        """Process training response and generate follow-up questions if needed."""
+        try:
+            # Parse the original question context
+            original_context = response_data.get('original_context', {})
+            track_data = original_context.get('track_data', {})
+            question_context = response_data.get('question_context', {})
+            user_response = response_data.get('response', '')
+            
+            stage = question_context.get('stage', 'unknown')
+            
+            # Handle different response stages
+            if stage == 'genre' and question_context.get('requires_subgenre', False):
+                # User just selected a genre, now ask for subgenre
+                selected_genre = user_response.strip()
+                if selected_genre:
+                    followup_question = self.generate_subgenre_followup_question(track_data, selected_genre)
+                    return {
+                        'id': f"followup_{question_id}_subgenre",
+                        'question': followup_question,
+                        'context': {
+                            'track_data': track_data,
+                            'parent_response': {
+                                'stage': 'genre',
+                                'response': selected_genre
+                            }
+                        },
+                        'priority': original_context.get('impact_score', 50),
+                        'status': 'pending'
+                    }
+                    
+            elif stage == 'subgenre':
+                # User completed genre+subgenre classification
+                parent_genre = question_context.get('parent_genre', '')
+                selected_subgenre = user_response.strip()
+                
+                # Update the track classification with both genre and subgenre
+                self._update_track_classification_from_training(
+                    track_data.get('id'),
+                    parent_genre,
+                    selected_subgenre,
+                    confidence=0.9  # High confidence since human classified
+                )
+                
+                return None  # No follow-up needed
+                
+            elif stage == 'validation':
+                if user_response == 'Incorrect - Need to Reclassify':
+                    # Generate new classification question
+                    return {
+                        'id': f"reclassify_{question_id}",
+                        'question': self._generate_targeted_question(track_data, 'classification_needed', 'genre'),
+                        'context': {
+                            'track_data': track_data,
+                            'reclassification': True
+                        },
+                        'priority': 80,  # High priority for reclassification
+                        'status': 'pending'
+                    }
+                    
+            return None  # No follow-up needed for other cases
+            
+        except Exception as e:
+            logger.error(f"Error processing training response: {e}")
+            return None
+            
+    def _update_track_classification_from_training(self, track_id: int, genre: str, subgenre: str = None, confidence: float = 0.9) -> bool:
+        """Update track classification based on human training input."""
+        try:
+            # Check if classification exists
+            existing_response = self._make_request('GET', f'cultural_classifications?track_id=eq.{track_id}')
+            existing = existing_response.json()
+            
+            classification_data = {
+                'genre': genre,
+                'subgenre': subgenre,
+                'genre_confidence': confidence,
+                'overall_confidence': confidence,
+                'human_validated': True,
+                'needs_review': False,
+                'classification_source': 'human_training'
+            }
+            
+            if existing:
+                # Update existing classification
+                response = self._make_request('PATCH', f'cultural_classifications?id=eq.{existing[0]["id"]}', json=classification_data)
+                logger.info(f"Updated classification for track {track_id}: {genre}/{subgenre}")
+            else:
+                # Create new classification
+                classification_data['track_id'] = track_id
+                response = self._make_request('POST', 'cultural_classifications', json=classification_data)
+                logger.info(f"Created new classification for track {track_id}: {genre}/{subgenre}")
+                
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error updating track classification: {e}")
+            return False
+            
+    def _generate_targeted_question(self, track: Dict, question_type: str, priority_field: str) -> Dict:
+        """Generate a targeted question with options based on the most impactful missing information."""
+        title = track.get('title', 'this track')
+        artist = track.get('artist', 'Unknown Artist')
+        
+        # Get known genres and subgenres for button options
+        genre_options = self._get_known_genres()
+        subgenre_options = self._get_known_subgenres()
+        
+        if question_type == "classification_needed":
+            return {
+                'question': f"🎵 Listen to '{title}' by {artist} - What genre best describes this track?",
+                'type': 'genre_selection',
+                'options': genre_options,
+                'allow_custom': True,
+                'follow_up': 'subgenre_required',
+                'context': {'stage': 'genre', 'requires_subgenre': True}
+            }
+            
+        elif question_type == "genre_refinement":
+            return {
+                'question': f"🎧 This track '{title}' by {artist} has uncertain genre classification. What specific genre/subgenre is this?",
+                'type': 'genre_selection',
+                'options': genre_options,
+                'allow_custom': True,
+                'follow_up': 'subgenre_required',
+                'context': {'stage': 'genre', 'requires_subgenre': True}
+            }
+            
+        elif question_type == "metadata_correction":
+            if priority_field == "artist":
+                return {
+                    'question': f"🎤 Who is the artist performing '{title}'? (Current: {artist})",
+                    'type': 'text_input',
+                    'options': [],
+                    'allow_custom': True,
+                    'follow_up': None,
+                    'context': {'stage': 'artist_correction'}
+                }
+            elif priority_field == "track_name":
+                return {
+                    'question': f"🏷️ What is the correct track name for this song by {artist}? (Current: {title})",
+                    'type': 'text_input',
+                    'options': [],
+                    'allow_custom': True,
+                    'follow_up': None,
+                    'context': {'stage': 'track_name_correction'}
+                }
+            else:
+                return {
+                    'question': f"📝 Help correct the metadata for '{title}' by {artist} - what {priority_field} information is missing?",
+                    'type': 'text_input',
+                    'options': [],
+                    'allow_custom': True,
+                    'follow_up': None,
+                    'context': {'stage': 'metadata_correction', 'field': priority_field}
+                }
+                
+        elif question_type == "human_validation":
+            # Get current classification for validation
+            current_genre = track.get('missing_analysis', {}).get('current_genre', 'Unknown')
+            return {
+                'question': f"✅ Please validate: Is '{title}' by {artist} correctly classified as {current_genre}?",
+                'type': 'validation',
+                'options': ['Correct', 'Incorrect - Need to Reclassify'],
+                'allow_custom': False,
+                'follow_up': 'conditional_reclassify',
+                'context': {'stage': 'validation', 'current_genre': current_genre}
+            }
+            
+        else:
+            return {
+                'question': f"🤔 Please analyze '{title}' by {artist} and provide classification information",
+                'type': 'genre_selection',
+                'options': genre_options,
+                'allow_custom': True,
+                'follow_up': 'subgenre_required',
+                'context': {'stage': 'general_analysis'}
+            }
             
     def get_training_stats(self) -> Dict:
         """Get training statistics from proper training tables."""
