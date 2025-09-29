@@ -28,3 +28,306 @@
 2025-09-28 12:35:13,587 - cultural_database_client - ERROR - Supabase API error: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
 2025-09-28 12:35:13,588 - cultural_database_client - ERROR - Response: {"code":"22P05","details":"\\u0000 cannot be converted to text.","hint":null,"message":"unsupported Unicode escape sequence"}
 2025-09-28 12:35:13,588 - cultural_database_client - ERROR - Error creating discovered track: 400 Client Error: Bad Request for url: http://172.22.17.138:8000/rest/v1/cultural_tracks
+2025-09-29 01:01:06,612 - cultural_intelligence_scanner - ERROR - Error extracting metadata from X:\lightbulb networ IUL Dropbox\Automation\MetaCrate\USERS\DJUNOHOO\1-Originals\#BREAK YO SELF\Contents\Sonic Mag Loaded\House\H-Tech House\House - Booka Shade, Walter Merziger, Arno Kammermeier, Walter Merziger, Arno Kammermeier, Booka Shade, Booka Shade - Call Morpheus - 0.mp3: [Errno 2] No such file or directory: 'X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Booka Shade, Walter Merziger, Arno Kammermeier, Walter Merziger, Arno Kammermeier, Booka Shade, Booka Shade - Call Morpheus - 0.mp3'
+2025-09-29 01:01:20,151 - cultural_intelligence_scanner - ERROR - Error extracting metadata from X:\lightbulb networ IUL Dropbox\Automation\MetaCrate\USERS\DJUNOHOO\1-Originals\#BREAK YO SELF\Contents\Sonic Mag Loaded\House\H-Tech House\House -  - Oriental Funk Stew - Sweet Emotion (Lawnchair Generals East Mix) (Lawnchair Generals East Mix) (Lawnchair Generals East Mix) myfreemp3.vip - 0.mp3: [Errno 2] No such file or directory: 'X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House -  - Oriental Funk Stew - Sweet Emotion (Lawnchair Generals East Mix) (Lawnchair Generals East Mix) (Lawnchair Generals East Mix) myfreemp3.vip - 0.mp3'
+2025-09-29 01:01:20,561 - cultural_intelligence_scanner - ERROR - Error extracting metadata from X:\lightbulb networ IUL Dropbox\Automation\MetaCrate\USERS\DJUNOHOO\1-Originals\#BREAK YO SELF\Contents\Sonic Mag Loaded\House\H-Tech House\House - Booka Shade, Arno Kammermeier, Walter Merziger, Arno Kammermeier, Arno Kammermeier, Walter Merziger, Walter Merziger, Arno Kammermeier, Walter Merziger - Tickle - 0.mp3: [Errno 2] No such file or directory: 'X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Booka Shade, Arno Kammermeier, Walter Merziger, Arno Kammermeier, Arno Kammermeier, Walter Merziger, Walter Merziger, Arno Kammermeier, Walter Merziger - Tickle - 0.mp3'
+2025-09-29 01:04:57,676 - cultural_intelligence_scanner - ERROR - Error extracting metadata from X:\lightbulb networ IUL Dropbox\Automation\MetaCrate\USERS\DJUNOHOO\1-Originals\#BREAK YO SELF\Contents\Sonic Mag Loaded\House\H-Tech House\House - Major Lazer ft Busy Signal, Daddy Yankee, The Flexican & FS Green - Watch Out For This (Denis Rublev & Kolya Funk Remix) (Clean)( - 9M) - 122.mp3: [Errno 2] No such file or directory: 'X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Major Lazer ft Busy Signal, Daddy Yankee, The Flexican & FS Green - Watch Out For This (Denis Rublev & Kolya Funk Remix) (Clean)( - 9M) - 122.mp3'
+2025-09-29 01:04:57,731 - cultural_intelligence_scanner - ERROR - Error calculating hash for X:\lightbulb networ IUL Dropbox\Automation\MetaCrate\USERS\DJUNOHOO\1-Originals\#BREAK YO SELF\Contents\Sonic Mag Loaded\House\H-Tech House\House - Major Lazer ft Busy Signal, Daddy Yankee, The Flexican & FS Green - Watch Out For This (Denis Rublev & Kolya Funk Remix) (Clean)( - 9M) - 122.mp3: [Errno 2] No such file or directory: 'X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Major Lazer ft Busy Signal, Daddy Yankee, The Flexican & FS Green - Watch Out For This (Denis Rublev & Kolya Funk Remix) (Clean)( - 9M) - 122.mp3'
+2025-09-29 01:45:59,955 - cultural_intelligence_scanner - ERROR - Error extracting metadata from X:\lightbulb networ IUL Dropbox\Automation\MetaCrate\USERS\DJUNOHOO\1-Originals\1999 (Dub) - Fun 101.flac: 
+2025-09-29 02:00:20,297 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://172.22.17.37:8088
+2025-09-29 02:00:20,298 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-29 02:02:04,996 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:02:05,084 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://172.22.17.37:8088
+2025-09-29 02:02:05,215 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-29 02:02:35,008 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:02:50,648 - werkzeug - INFO - 172.22.17.37 - - [29/Sep/2025 02:02:50] "GET /?id=348e63fc-cda4-4e2b-914e-fb373d33afb2&vscodeBrowserReqId=1759136570495 HTTP/1.1" 200 -
+2025-09-29 02:03:05,019 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:03:35,026 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:04:05,033 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:04:35,042 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:05:05,049 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:05:35,058 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:06:05,066 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:06:35,118 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:07:05,127 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:07:35,134 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:08:05,144 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:08:35,150 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:09:05,159 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:09:35,168 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:10:05,174 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:10:35,182 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:11:05,190 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:11:21,685 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:11:21,729 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://172.22.17.37:8088
+2025-09-29 02:11:21,739 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-29 02:11:35,197 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:11:51,775 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:12:05,202 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:12:21,860 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:12:35,210 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:12:45,786 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:12:45,838 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://172.22.17.37:8088
+2025-09-29 02:12:45,849 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-29 02:12:51,948 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:13:05,218 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:13:15,796 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:13:22,033 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:13:35,225 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:13:45,804 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:13:52,120 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:14:05,231 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:14:15,810 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:14:22,217 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:14:35,238 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:14:45,817 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:14:52,299 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:15:05,245 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:15:15,823 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:15:22,389 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:15:35,252 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:15:45,830 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:15:52,471 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:15:54,848 - werkzeug - INFO - 172.22.17.37 - - [29/Sep/2025 02:15:54] "GET /?id=348e63fc-cda4-4e2b-914e-fb373d33afb2&vscodeBrowserReqId=1759137354834 HTTP/1.1" 200 -
+2025-09-29 02:16:05,260 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:16:15,837 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:16:22,571 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:16:35,266 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:16:45,844 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:16:52,665 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:17:05,274 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:17:15,851 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:17:22,754 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:17:35,280 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:17:45,859 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:17:52,848 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:18:05,287 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:18:15,865 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:18:22,942 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:18:35,295 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:18:45,872 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:18:53,098 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:19:05,301 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:19:15,880 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:19:23,202 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:19:35,310 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:19:45,887 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:19:53,332 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:20:05,317 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:20:15,895 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:20:23,420 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:20:35,325 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:20:45,902 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:20:53,509 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:21:05,335 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:21:15,909 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:21:23,596 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:21:35,399 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:21:45,917 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:21:53,756 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:22:05,407 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:22:15,925 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:22:23,844 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:22:35,414 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:22:45,932 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:22:53,938 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:23:05,421 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:23:15,940 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:23:24,030 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:23:33,916 - werkzeug - INFO - 172.22.17.37 - - [29/Sep/2025 02:23:33] "GET /?id=348e63fc-cda4-4e2b-914e-fb373d33afb2&vscodeBrowserReqId=1759137813904 HTTP/1.1" 200 -
+2025-09-29 02:23:35,428 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:23:45,947 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:23:54,167 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:24:05,436 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:24:15,955 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:24:24,255 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:24:35,444 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:24:45,962 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:24:54,386 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:25:05,451 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:25:10,689 - werkzeug - INFO - 172.22.17.37 - - [29/Sep/2025 02:25:10] "GET /?id=348e63fc-cda4-4e2b-914e-fb373d33afb2&vscodeBrowserReqId=1759137910670 HTTP/1.1" 200 -
+2025-09-29 02:25:15,970 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:25:24,483 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:25:35,458 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:25:45,977 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:25:54,611 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:26:05,466 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:26:15,984 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:26:24,783 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:26:35,474 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:26:45,991 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:26:54,870 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:27:01,027 - werkzeug - INFO - 172.22.17.37 - - [29/Sep/2025 02:27:01] "GET /?id=348e63fc-cda4-4e2b-914e-fb373d33afb2&vscodeBrowserReqId=1759138021014 HTTP/1.1" 200 -
+2025-09-29 02:27:05,484 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:27:15,999 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:27:24,958 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:27:35,495 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:27:46,005 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:27:55,083 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:28:05,503 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:28:16,012 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:28:25,168 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:28:35,510 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:28:46,019 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:28:55,260 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:29:05,520 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:29:16,026 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:29:25,340 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:29:35,530 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:29:46,032 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:29:55,430 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:30:05,536 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:30:16,039 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:30:25,521 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:30:35,544 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:30:46,046 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:30:50,712 - werkzeug - INFO - 172.22.17.37 - - [29/Sep/2025 02:30:50] "GET / HTTP/1.1" 200 -
+2025-09-29 02:30:51,305 - werkzeug - INFO - 172.22.17.37 - - [29/Sep/2025 02:30:51] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-29 02:30:55,611 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:31:05,552 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:31:16,053 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:31:25,704 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:31:35,569 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:31:46,061 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:31:55,795 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:32:05,576 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:32:16,069 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:32:25,909 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:32:35,583 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:32:46,076 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:32:56,000 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:33:05,590 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:33:16,083 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:33:26,090 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:33:35,597 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:33:46,089 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:33:56,249 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:34:05,606 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:34:16,097 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:34:26,337 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:34:35,613 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:34:46,102 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:34:56,425 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:35:05,621 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:35:16,109 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:35:26,521 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:35:35,627 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:35:46,116 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:35:56,611 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:36:05,635 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:36:16,123 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:36:26,700 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:36:35,642 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:36:46,130 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:36:56,788 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:37:05,649 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:37:16,137 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:37:26,883 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:37:35,657 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:37:46,144 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:37:56,977 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:38:05,666 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:38:16,150 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:38:27,062 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:38:35,673 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:38:46,157 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:38:57,145 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:39:05,679 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:39:16,163 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:39:27,235 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:39:35,686 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:39:46,170 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:39:57,326 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:40:05,693 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:40:16,175 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:40:27,410 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:40:35,700 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:40:46,182 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:40:57,490 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:41:05,706 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:41:16,189 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:41:27,631 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:41:35,713 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:41:46,195 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:41:57,720 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:42:05,720 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:42:16,202 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:42:27,802 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:42:35,726 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:42:46,209 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:42:57,893 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:43:05,732 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:43:16,215 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:43:27,984 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:43:35,739 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:43:46,221 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:43:58,074 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:44:05,746 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:44:16,228 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:44:28,186 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:44:35,753 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:44:46,236 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:44:58,276 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:45:05,760 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:45:16,243 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:45:28,362 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:45:35,768 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:45:46,250 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:45:58,457 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:46:05,776 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:46:16,259 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:46:28,541 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:46:35,783 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:46:46,266 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:46:58,629 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:47:05,790 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:47:16,272 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:47:28,717 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:47:35,796 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:47:46,279 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:47:58,878 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:48:05,802 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:48:16,284 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:48:28,971 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:48:35,809 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:48:46,291 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:48:59,133 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:49:05,816 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:49:16,297 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:49:29,227 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:49:35,823 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:49:46,305 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:49:59,315 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:50:05,831 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:50:16,312 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:50:29,405 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:50:35,838 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:50:46,319 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:50:59,516 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:51:05,846 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:51:16,326 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:51:29,611 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:51:35,852 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:51:46,333 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:51:59,731 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:52:05,859 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:52:16,339 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:52:29,821 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:52:35,866 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:52:46,345 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:52:59,900 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:53:05,874 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:53:16,352 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:53:29,988 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:53:35,887 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:53:46,360 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:54:00,088 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:54:05,895 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:54:16,367 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:54:30,187 - __main__ - ERROR - Error updating dashboard cache: 'duration'
+2025-09-29 02:54:35,902 - __main__ - INFO - Dashboard cache updated successfully
+2025-09-29 02:54:46,374 - __main__ - INFO - Dashboard cache updated successfully

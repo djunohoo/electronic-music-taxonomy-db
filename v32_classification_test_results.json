@@ -1,0 +1,480 @@
+{
+  "test_metadata": {
+    "version": "v3.2",
+    "timestamp": "2025-09-29 00:43:30",
+    "sample_size": 250,
+    "processing_time": 18.04309105873108,
+    "files_per_second": 13.855719022103179
+  },
+  "analysis": {
+    "summary": {
+      "total_files": 250,
+      "classified_files": 148,
+      "unclassified_files": 102,
+      "classification_rate": 59.199999999999996,
+      "average_confidence": 1.0
+    },
+    "main_genres": {
+      "house": 128,
+      "breaks": 13,
+      "drum and bass": 6,
+      "funk": 1
+    },
+    "subgenres": {
+      "drum and bass \u2192 jungle": 1,
+      "breaks \u2192 electro": 1,
+      "house \u2192 mainstage": 1
+    },
+    "top_filename_patterns": {
+      "house": 129,
+      "0.mp3": 82,
+      "(original": 33,
+      "mix)(": 30,
+      "remix)": 18,
+      "mix)": 17,
+      "bass": 17,
+      "sessions": 14,
+      "(vonyc": 13,
+      "the": 12,
+      "(extended": 11,
+      "9m)": 11,
+      "breaks": 11,
+      "125.mp3": 10,
+      "breakbeat": 10,
+      "boris": 10,
+      "oliver": 9,
+      "brejcha": 9,
+      "paul": 8,
+      "126.mp3": 8
+    },
+    "top_path_patterns": {
+      "lightbulb networ iul dropbox": 148,
+      "automation": 148,
+      "metacrate": 148,
+      "users": 148,
+      "djunohoo": 148,
+      "1-originals": 148,
+      "#break yo self": 66,
+      "contents": 65,
+      "sonic mag loaded": 61,
+      "house": 59,
+      "h-tech house": 53,
+      "h-bass house": 5,
+      "8-stage2": 5,
+      "phase5": 4,
+      "phase4": 3,
+      "drum & bass": 2,
+      "phase3": 2,
+      "house - boris brejcha - heaven trip (mixed) - 0.mp3": 2,
+      "#1-clean slate": 2,
+      "house - shift k3y - lets talk about (original mix)( - 6m) - 127.mp3": 1
+    },
+    "classification_examples": {
+      "house": [
+        "House - Shift K3Y - Lets Talk About (Original Mix)( - 6M) - 127.mp3",
+        "House - DJ S.K.T - Poison (Original Mix)( - 12M) - 123.mp3",
+        "House - Paul Van Dyk, Aly & Fila - SHINE (Ibiza Anthem 2022) (VONYC Sessions 833) - 0.mp3"
+      ],
+      "drum and bass": [
+        "Drum & Bass - Baron Feat. Pendulum - Guns at Dawn( - 9M) - 174.mp3",
+        "Drum & Bass - J-Laze - Miles & Miles From Marz( - 5M) - 173.mp3",
+        "Drum & Bass - Peshay - Miles From Home( - 6M) - 172.mp3"
+      ],
+      "breaks": [
+        "FLY AWAY_Nikko Culture Remix_Oracle's Breakbeat Edit_130_Dm.wav",
+        "\u2778 Breaks _ Breakbeat _ UK Bass-Ondamike, The Bass Droppers - Beetlejuice (Movie Mix).mp3",
+        "\u2778 Breaks _ Breakbeat _ UK Bass-Kwerk - Overdose (Original Mix) (Keenan Cline's conflicted copy 2025-07-17).wav"
+      ]
+    }
+  },
+  "questions": [
+    {
+      "category": "Overall Performance",
+      "question": "With a 59.2% classification rate on 250 random files, how does our v3.2 system compare to the original v3.0 system that achieved 99.7% noise reduction?",
+      "context": "Classified 148/250 files",
+      "insight": "This tests whether our comprehensive subgenre expansion maintained accuracy"
+    },
+    {
+      "category": "Genre Distribution",
+      "question": "Why is 'house' the most frequently classified genre (128 files)? Does this reflect the actual music collection or classification bias?",
+      "context": "Top 3 genres: ['house', 'breaks', 'drum and bass']",
+      "insight": "This reveals whether our patterns favor certain genres over others"
+    },
+    {
+      "category": "Subgenre Performance",
+      "question": "How accurate is our subgenre classification? The top result 'drum and bass \u2192 jungle' appears 1 times - are these correct classifications?",
+      "context": "Total unique subgenres detected: 3",
+      "insight": "This tests the precision of our 70+ subgenre taxonomy"
+    },
+    {
+      "category": "Pattern Recognition",
+      "question": "The filename pattern 'house' appears in 129 files. Is this pattern correctly driving classification decisions, or creating false positives?",
+      "context": "Top patterns: ['house', '0.mp3', '(original', 'mix)(', 'remix)']",
+      "insight": "This evaluates whether our pattern matching is precise or too broad"
+    },
+    {
+      "category": "Unclassified Files",
+      "question": "Why did 102 files (40.8%) remain unclassified? Are these genuinely non-electronic music, or are we missing genre patterns?",
+      "context": "Manual review of unclassified files needed",
+      "insight": "This identifies gaps in our taxonomy coverage"
+    },
+    {
+      "category": "Classification Confidence",
+      "question": "With an average confidence of 1.00, how reliable are our classifications? Should we set minimum confidence thresholds?",
+      "context": "Based on 148 classified files",
+      "insight": "This evaluates the reliability of our classification algorithm"
+    }
+  ],
+  "detailed_results": [
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\#1-Clean Slate\\Shared Library\\Contents\\UnknownArtist\\UnknownAlbum\\Framewerk - I Am (Framewerk Rewerk) 8839.wav",
+      "filename": "Framewerk - I Am (Framewerk Rewerk) 8839.wav",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - Shift K3Y - Lets Talk About (Original Mix)( - 6M) - 127.mp3",
+      "filename": "House - Shift K3Y - Lets Talk About (Original Mix)( - 6M) - 127.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - DJ S.K.T - Poison (Original Mix)( - 12M) - 123.mp3",
+      "filename": "House - DJ S.K.T - Poison (Original Mix)( - 12M) - 123.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\8-stage2\\\u2777 EP23 - K-Deejays & Aggresivnes - Unforgiven Breakdown (Sekret Chadow Bootleg).wav",
+      "filename": "\u2777 EP23 - K-Deejays & Aggresivnes - Unforgiven Breakdown (Sekret Chadow Bootleg).wav",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Jackal_Hyde_-_Darkstar_(mp3.pm)_9D5E191E.mp3",
+      "filename": "Jackal_Hyde_-_Darkstar_(mp3.pm)_9D5E191E.mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - Paul Van Dyk, Aly & Fila - SHINE (Ibiza Anthem 2022) (VONYC Sessions 833) - 0.mp3",
+      "filename": "House - Paul Van Dyk, Aly & Fila - SHINE (Ibiza Anthem 2022) (VONYC Sessions 833) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - David Forbes - Questions (Must Be Asked) (VONYC Sessions 833) (Kyau & Albert Remix) - 0.mp3",
+      "filename": "House - David Forbes - Questions (Must Be Asked) (VONYC Sessions 833) (Kyau & Albert Remix) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\#1-Clean Slate\\From Artist\\FSOL - Papa New Guinea (Richie Blacker Remix) Master 1.wav",
+      "filename": "FSOL - Papa New Guinea (Richie Blacker Remix) Master 1.wav",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\unsorted - Org Lounge - Sofa Surfer( - 12M) - 179_1.mp3",
+      "filename": "unsorted - Org Lounge - Sofa Surfer( - 12M) - 179_1.mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Boston_Bruins - I_Will_Be_Free_(Original_Mix)_[A-MP3].mp3",
+      "filename": "Boston_Bruins - I_Will_Be_Free_(Original_Mix)_[A-MP3].mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - Solee - Years Gone By - 0.mp3",
+      "filename": "House - Solee - Years Gone By - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\test\\SellRude - Cheddar (Original Mix).wav",
+      "filename": "SellRude - Cheddar (Original Mix).wav",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Bass House\\House - Gabry Ponte, Alida, LUM!X - Forget You (feat. Gabry Ponte) [LUM!X VIP MIX] (Extended Mix)( - 7M) - 132.mp3",
+      "filename": "House - Gabry Ponte, Alida, LUM!X - Forget You (feat. Gabry Ponte) [LUM!X VIP MIX] (Extended Mix)( - 7M) - 132.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Joker, Skrillex, Sleepnet - Tears (Original Mix)( - 9M) - 105.mp3",
+      "filename": "House - Joker, Skrillex, Sleepnet - Tears (Original Mix)( - 9M) - 105.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - Noize Ninjaz - Work (Intro)( - 6M) - 127.mp3",
+      "filename": "House - Noize Ninjaz - Work (Intro)( - 6M) - 127.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Trilucid & Phil Martyn - Elements (Extended Mix) - 0.mp3",
+      "filename": "House - Trilucid & Phil Martyn - Elements (Extended Mix) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\18370241_burn_(original mix).mp3",
+      "filename": "18370241_burn_(original mix).mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Three DrivesOn A Vinyl x Vintage Culture x Ascention_Greece 2024_ Oracle's Someone Like A Greek Vocal Mash Up.wav",
+      "filename": "Three DrivesOn A Vinyl x Vintage Culture x Ascention_Greece 2024_ Oracle's Someone Like A Greek Vocal Mash Up.wav",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - Post Malone - rockstar - Hypelezz Touching Me Edit (Dirty)( - 9M) - 124.mp3",
+      "filename": "House - Post Malone - rockstar - Hypelezz Touching Me Edit (Dirty)( - 9M) - 124.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\test\\Prodigy - Firestarter.wav",
+      "filename": "Prodigy - Firestarter.wav",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\djstudio_DJ Icey Stacked Original Mix_174448.mp3",
+      "filename": "djstudio_DJ Icey Stacked Original Mix_174448.mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Format_B - Okeey_Yaaah_(Original_Mix)_[www.4clubbers.pl]_(by_adix6)_[A-MP3].mp3",
+      "filename": "Format_B - Okeey_Yaaah_(Original_Mix)_[www.4clubbers.pl]_(by_adix6)_[A-MP3].mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - How2 Groove - Disco Pumpin (Dub Mix)( - 2M) - 125.mp3",
+      "filename": "House - How2 Groove - Disco Pumpin (Dub Mix)( - 2M) - 125.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House_-_-_Inland_Knights_-_Deep_In_myfreemp3.vip_-_0_[A-MP3].mp3",
+      "filename": "House_-_-_Inland_Knights_-_Deep_In_myfreemp3.vip_-_0_[A-MP3].mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Mike G - MIKE G-HQD - 130.wav",
+      "filename": "Mike G - MIKE G-HQD - 130.wav",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Oliver Schories, Joris Delacroix - Don't Move (Dan Caster Remix) - 0.mp3",
+      "filename": "House - Oliver Schories, Joris Delacroix - Don't Move (Dan Caster Remix) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Noizu - Middle (Extended Mix)( - 4M) - 127.mp3",
+      "filename": "House - Noizu - Middle (Extended Mix)( - 4M) - 127.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\New_Northern - Monsun_(Original_Mix)_[A-MP3].mp3",
+      "filename": "New_Northern - Monsun_(Original_Mix)_[A-MP3].mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - 2Symmetry - Nordkapp (Original Mix) - 0.mp3",
+      "filename": "House - 2Symmetry - Nordkapp (Original Mix) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Code Rising - Death By A 1000 Kilobytes - 02.mp3",
+      "filename": "Code Rising - Death By A 1000 Kilobytes - 02.mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\djstudio_djstudio_Matt Klear Dreams Original.mp3",
+      "filename": "djstudio_djstudio_Matt Klear Dreams Original.mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - Catz 'n Dogz, Eats Everything, Catz Eats Dogz - Evil Tram (Original Mix)( - 2M) - 0.mp3",
+      "filename": "House - Catz 'n Dogz, Eats Everything, Catz Eats Dogz - Evil Tram (Original Mix)( - 2M) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - BacauHouseMafia.Ro - Depeche Mode - Soothe My Soul (Destructo Remix) - 0.mp3",
+      "filename": "House - BacauHouseMafia.Ro - Depeche Mode - Soothe My Soul (Destructo Remix) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\0F920301_Alejandro Ramirez (COL) - Se Vua (O.mp3",
+      "filename": "0F920301_Alejandro Ramirez (COL) - Se Vua (O.mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Adri Blok, Paul Parsons - Let Em In (Original Mix).mp3",
+      "filename": "Adri Blok, Paul Parsons - Let Em In (Original Mix).mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Yellow_Claw,_\u20acURO_TRA$H - The_Function_feat._Sky_Sky_(Dysomia_Remix)_[A-MP3].mp3",
+      "filename": "Yellow_Claw,_\u20acURO_TRA$H - The_Function_feat._Sky_Sky_(Dysomia_Remix)_[A-MP3].mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Paul Oakenfold - Barber's Adagio For Strings (Refracture Remix) - 0.mp3",
+      "filename": "House - Paul Oakenfold - Barber's Adagio For Strings (Refracture Remix) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Oliver Schories - Black Rain (original mix) - 0.mp3",
+      "filename": "House - Oliver Schories - Black Rain (original mix) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Sharaz - Switched - 0.wav",
+      "filename": "Sharaz - Switched - 0.wav",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Bass Weazal - Jungle Massive.m4a",
+      "filename": "Bass Weazal - Jungle Massive.m4a",
+      "classification": "jungle",
+      "parent_genre": "drum and bass",
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - OOTORO - Breaking Away (Original Mix)( - 7M) - 126.mp3",
+      "filename": "House - OOTORO - Breaking Away (Original Mix)( - 7M) - 126.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - Nicole Wane - What You Want (Techno Dub Mix)( - 11M) - 125.mp3",
+      "filename": "House - Nicole Wane - What You Want (Techno Dub Mix)( - 11M) - 125.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\House - Badger - Dancefloor Hot (Original Mix)( - 9D) - 130.mp3",
+      "filename": "House - Badger - Dancefloor Hot (Original Mix)( - 9D) - 130.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Bass House\\House - Mike & Me, WeDamnz - Status (Club Mix)( - 10D) - 126.mp3",
+      "filename": "House - Mike & Me, WeDamnz - Status (Club Mix)( - 10D) - 126.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\Drum & Bass\\Drum & Bass - Baron Feat. Pendulum - Guns at Dawn( - 9M) - 174.mp3",
+      "filename": "Drum & Bass - Baron Feat. Pendulum - Guns at Dawn( - 9M) - 174.mp3",
+      "classification": "drum and bass",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\djstudio_Stanton Warriors Time Original Mix_.mp3",
+      "filename": "djstudio_Stanton Warriors Time Original Mix_.mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\Ashlee Keating - Hurt Me So Good (Block & Cr.mp3",
+      "filename": "Ashlee Keating - Hurt Me So Good (Block & Cr.mp3",
+      "classification": "unclassified",
+      "parent_genre": null,
+      "confidence": 0.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - GRAZZE, Rauschhaus - Nord (VONYC Sessions 827) - 0.mp3",
+      "filename": "House - GRAZZE, Rauschhaus - Nord (VONYC Sessions 827) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Tech House\\House - Oliver Schories - She Goes (Original Mix) - 0.mp3",
+      "filename": "House - Oliver Schories - She Goes (Original Mix) - 0.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    },
+    {
+      "filepath": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals\\#BREAK YO SELF\\Contents\\Sonic Mag Loaded\\House\\H-Bass House\\House - Yellow Claw, \u20acURO TRA$H - B\u20acNZ (Original Mix)( - 12D) - 125.mp3",
+      "filename": "House - Yellow Claw, \u20acURO TRA$H - B\u20acNZ (Original Mix)( - 12D) - 125.mp3",
+      "classification": "house",
+      "parent_genre": null,
+      "confidence": 1.0
+    }
+  ]
+}

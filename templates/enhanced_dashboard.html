@@ -12,39 +12,65 @@
             
             currentQuestion = question;
             
-            // Extract track data from question context
-            const trackData = question.context?.track_data;
+            // Extract track data from question (now directly available)
+            const trackData = question.track_data;
             
             let trackInfoHtml = '';
             if (trackData) {
+                // Create download link for the actual file
+                const encodedPath = trackData.file_path ? trackData.file_path.replace(/:/g, '|').replace(/ /g, '_') : '';
+                const downloadUrl = encodedPath ? `/download/${encodedPath}` : '';
+                
+                // Confidence indicator
+                const confidence = trackData.confidence_score || 0;
+                const confidencePercent = Math.round(confidence * 100);
+                const confidenceColor = confidence < 0.3 ? 'red' : confidence < 0.6 ? 'orange' : 'green';
+                
                 trackInfoHtml = `
                     <div class="track-info-card" style="background: rgba(0, 255, 255, 0.05); border: 1px solid var(--neon-cyan); border-radius: 10px; padding: 15px; margin: 15px 0;">
-                        <div class="track-header" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <i class="fas fa-music" style="color: var(--neon-cyan); margin-right: 10px; font-size: 1.2rem;"></i>
-                            <div>
-                                <h5 style="margin: 0; color: var(--neon-cyan);">${trackData.title || 'Unknown Track'}</h5>
-                                <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">by ${trackData.artist || 'Unknown Artist'}</p>
-                                <p style="margin: 0; color: var(--text-secondary); font-size: 0.8rem;">Album: ${trackData.album || 'Unknown Album'}</p>
+                        <div class="track-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <div style="display: flex; align-items: center;">
+                                <i class="fas fa-music" style="color: var(--neon-cyan); margin-right: 10px; font-size: 1.2rem;"></i>
+                                <div>
+                                    <h5 style="margin: 0; color: var(--neon-cyan);">${trackData.title || 'Unknown Track'}</h5>
+                                    <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">by ${trackData.artist || 'Unknown Artist'}</p>
+                                    <p style="margin: 0; color: var(--text-secondary); font-size: 0.8rem;">Album: ${trackData.album || 'Unknown Album'}</p>
+                                </div>
+                            </div>
+                            <div class="confidence-badge" style="background: rgba(${confidenceColor === 'red' ? '255,0,0' : confidenceColor === 'orange' ? '255,165,0' : '0,255,0'}, 0.2); border: 1px solid ${confidenceColor}; border-radius: 20px; padding: 5px 15px; text-align: center;">
+                                <div style="color: ${confidenceColor}; font-weight: bold; font-size: 0.9rem;">${confidencePercent}% Confidence</div>
+                                <div style="color: var(--text-secondary); font-size: 0.7rem;">Current: ${trackData.classification || 'Unknown'}</div>
                             </div>
                         </div>
                         
+                        ${trackData.file_exists && downloadUrl ? `
                         <div class="track-controls" style="margin-bottom: 15px;">
-                            <audio controls style="width: 100%; background: rgba(0, 255, 255, 0.1); border-radius: 5px;">
-                                <source src="file://${trackData.file_path}" type="audio/mpeg">
-                                <source src="file://${trackData.file_path}" type="audio/wav">
-                                <source src="file://${trackData.file_path}" type="audio/flac">
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <a href="${downloadUrl}" target="_blank" class="download-btn" style="background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan)); color: black; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                                    <i class="fas fa-download"></i> Download Track (${trackData.file_size_mb || 0} MB)
+                                </a>
+                                <button onclick="playInBrowser('${downloadUrl}')" class="play-btn" style="background: linear-gradient(45deg, var(--neon-green), var(--neon-cyan)); color: black; padding: 8px 16px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                                    <i class="fas fa-play"></i> Play in Browser
+                                </button>
+                            </div>
+                            <audio id="trackPlayer" controls style="width: 100%; background: rgba(0, 255, 255, 0.1); border-radius: 5px; display: none;">
+                                <source src="${downloadUrl}" type="audio/mpeg">
+                                <source src="${downloadUrl}" type="audio/wav">
+                                <source src="${downloadUrl}" type="audio/flac">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
+                        ` : '<div style="color: orange; padding: 10px; text-align: center;"><i class="fas fa-exclamation-triangle"></i> Track file not accessible for playback</div>'}
                         
                         <div class="track-metadata" style="font-size: 0.8rem; color: var(--text-secondary);">
                             <p><i class="fas fa-folder"></i> <strong>Location:</strong> ${trackData.folder_context || 'Unknown'}</p>
                             <p><i class="fas fa-file"></i> <strong>File:</strong> ${trackData.file_path ? trackData.file_path.split('\\\\').pop() : 'Unknown'}</p>
+                            ${confidencePercent < 50 ? '<p style="color: var(--neon-purple);"><i class="fas fa-brain"></i> <strong>Priority:</strong> Low confidence - AI needs your help!</p>' : ''}
                         </div>
                         
                         <div class="listening-prompt" style="background: rgba(0, 255, 0, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; padding: 10px; margin-top: 10px; text-align: center;">
                             <i class="fas fa-headphones" style="color: var(--neon-green); margin-right: 8px;"></i>
-                            <strong style="color: var(--neon-green);">Listen to the track above, then classify its genre below</strong>
+                            <strong style="color: var(--neon-green);">Download/play the track above, then help train the AI below!</strong>
                         </div>
                     </div>
                 `;
@@ -685,6 +711,20 @@
                     <small>${activity.file_size_mb}MB • ${new Date(activity.processed_at).toLocaleString()}</small>
                 </div>`
             ).join('');
+        }
+
+        // Browser audio playback function
+        function playInBrowser(audioUrl) {
+            const player = document.getElementById('trackPlayer');
+            if (player) {
+                player.src = audioUrl;
+                player.style.display = 'block';
+                player.load();
+                player.play().catch(error => {
+                    console.log('Audio playback failed:', error);
+                    alert('Audio playback failed. Please try downloading the file instead.');
+                });
+            }
         }
 
         // Auto-refresh every 30 seconds
