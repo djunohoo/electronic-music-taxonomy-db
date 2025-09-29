@@ -154,6 +154,7 @@ def classify_music_term(term):
         'breaks': ['breaks', 'breakbeat', 'break beat'],
         'hardcore': ['hardcore'],
         'hardstyle': ['hardstyle'],
+        'uk garage': ['uk garage', 'garage'],
         'trap': ['trap'],
         'ambient': ['ambient'],
         'disco': ['disco'],
@@ -238,14 +239,79 @@ def classify_music_term(term):
         'classic _ detroit _ modern': ('subgenre', 'electro', 'breaks'),
         'classic___detroit___modern': ('subgenre', 'electro', 'breaks'),
         'classic detroit modern': ('subgenre', 'electro', 'breaks'),
-        'garage': ('subgenre', 'garage', 'breaks'),
         'electro': ('subgenre', 'electro', 'breaks'),
+        
+        # UK Garage subgenres  
+        '2-step': ('subgenre', '2-step', 'uk garage'),
+        'speed garage': ('subgenre', 'speed garage', 'uk garage'),
+        
+        # Comprehensive House subgenres from catalog
+        'future house': ('subgenre', 'future house', 'house'),
+        'minimal house': ('subgenre', 'minimal house', 'house'),
+        'hard house': ('subgenre', 'hard house', 'house'),
+        'garage house': ('subgenre', 'garage house', 'house'),
+        'chicago house': ('subgenre', 'chicago house', 'house'),
+        'acid house': ('subgenre', 'acid house', 'house'),
+        'melodic house': ('subgenre', 'melodic house', 'house'),
+        'ghetto house': ('subgenre', 'ghetto house', 'house'),
+        
+        # Comprehensive DnB subgenres from catalog
+        'rollers': ('subgenre', 'rollers', 'drum and bass'),
+        'halftime': ('subgenre', 'halftime', 'drum and bass'),
+        'clownstep': ('subgenre', 'clownstep', 'drum and bass'),
+        'autonomic': ('subgenre', 'autonomic', 'drum and bass'),
+        'drill n bass': ('subgenre', 'drill n bass', 'drum and bass'),
+        'dancefloor dnb': ('subgenre', 'dancefloor dnb', 'drum and bass'),
+        'ragga jungle': ('subgenre', 'ragga jungle', 'drum and bass'),
+        'drumfunk': ('subgenre', 'drumfunk', 'drum and bass'),
+        'minimal dnb': ('subgenre', 'minimal dnb', 'drum and bass'),
+        
+        # Comprehensive Trance subgenres from catalog
+        'balearic trance': ('subgenre', 'balearic trance', 'trance'),
+        'euro trance': ('subgenre', 'euro trance', 'trance'),
+        'full-on psytrance': ('subgenre', 'full-on psytrance', 'trance'),
+        'minimal psy': ('subgenre', 'minimal psy', 'trance'),
+        'dark trance': ('subgenre', 'dark trance', 'trance'),
+        'acid trance': ('subgenre', 'acid trance', 'trance'),
+        'classic trance': ('subgenre', 'classic trance', 'trance'),
+        'ambient trance': ('subgenre', 'ambient trance', 'trance'),
+        'orchestral trance': ('subgenre', 'orchestral trance', 'trance'),
+        
+        # Comprehensive Breakbeat subgenres from catalog
+        'florida breaks': ('subgenre', 'florida breaks', 'breaks'),
+        'funky breaks': ('subgenre', 'funky breaks', 'breaks'),
+        'neuro breaks': ('subgenre', 'neuro breaks', 'breaks'),
+        'psy breaks': ('subgenre', 'psy breaks', 'breaks'),
+        'dub breaks': ('subgenre', 'dub breaks', 'breaks'),
+        'tech breaks': ('subgenre', 'tech breaks', 'breaks'),
+        'trap breaks': ('subgenre', 'trap breaks', 'breaks'),
+        'bassline breaks': ('subgenre', 'bassline breaks', 'breaks'),
+        'bass breaks': ('subgenre', 'bass breaks', 'breaks'),
+        'uk breaks': ('subgenre', 'uk breaks', 'breaks'),
+        'rave breaks': ('subgenre', 'rave breaks', 'breaks'),
+        'booty breaks': ('subgenre', 'booty breaks', 'breaks'),
+        'ghetto breaks': ('subgenre', 'ghetto breaks', 'breaks'),
+        'ambient breaks': ('subgenre', 'ambient breaks', 'breaks'),
+        'chill breaks': ('subgenre', 'chill breaks', 'breaks'),
         
         # Additional genuine genres/styles found in collection
         'tribal': ('subgenre', 'tribal', 'house'),  # Most tribal is house-based
         'acoustic': ('style', 'acoustic', 'electronica'),
         'raw feel': ('style', 'raw', 'underground'),
         'old skool': ('style', 'old school', 'classic'),
+        
+        # Major subgenres from comprehensive genre analysis
+        'psytrance': ('subgenre', 'psytrance', 'trance'),
+        'goa trance': ('subgenre', 'goa trance', 'trance'),
+        'big beat': ('subgenre', 'big beat', 'breakbeat'),
+        'neurofunk': ('subgenre', 'neurofunk', 'drum and bass'),
+        'brostep': ('subgenre', 'brostep', 'dubstep'),
+        '2-step': ('subgenre', '2-step', 'uk garage'),
+        'speed garage': ('subgenre', 'speed garage', 'uk garage'),
+        'gabber': ('subgenre', 'gabber', 'hardcore'),
+        'happy hardcore': ('subgenre', 'happy hardcore', 'hardcore'),
+        'rawstyle': ('subgenre', 'rawstyle', 'hardstyle'),
+        'euphoric hardstyle': ('subgenre', 'euphoric hardstyle', 'hardstyle'),
         
         # Artist patterns indicating breaks subgenres
         'deejay_shaolin_rerub': ('subgenre', 'melodic breaks', 'breaks'),
@@ -254,16 +320,16 @@ def classify_music_term(term):
         'axel von greiff': ('subgenre', 'progressive breaks', 'breaks'),
         'dave gluskin rmx': ('subgenre', 'breaks', 'breaks'),
         
-        # Former garage subgenres (now under breaks)
-        'uk garage': ('subgenre', 'uk garage', 'breaks'),
-        'speed garage': ('subgenre', 'speed garage', 'breaks'),
-        '2 step': ('subgenre', '2 step', 'breaks'),
+        # Additional Hardstyle subgenres
+        'rawstyle': ('subgenre', 'rawstyle', 'hardstyle'),
+        'euphoric hardstyle': ('subgenre', 'euphoric hardstyle', 'hardstyle'),
         
         # Trap subgenres
         'future trap': ('subgenre', 'future trap', 'trap'),
         'hard trap': ('subgenre', 'hard trap', 'trap'),
         
         # Hardcore subgenres
+        'hardcore techno': ('subgenre', 'hardcore techno', 'hardcore'),
         'gabber': ('subgenre', 'gabber', 'hardcore'),
         'happy hardcore': ('subgenre', 'happy hardcore', 'hardcore'),
         
@@ -288,15 +354,15 @@ def classify_music_term(term):
     if term_lower in subgenres:
         return subgenres[term_lower]
     
-    # Check for core genre matches
+    # Check for core genre matches (exact matches first)
     for genre, patterns in core_genres.items():
-        for pattern in patterns:
+        for pattern in sorted(patterns, key=len, reverse=True):  # Check longer patterns first
             if term_lower == pattern:
                 return ('genre', genre, None)
     
-    # Check if term contains a genre even with production terms
+    # Check if term contains a genre even with production terms (longer patterns first)
     for genre, patterns in core_genres.items():
-        for pattern in patterns:
+        for pattern in sorted(patterns, key=len, reverse=True):  # Check longer patterns first
             if pattern in term_lower:
                 # Check if it's actually a subgenre
                 for subgenre_key, subgenre_data in subgenres.items():

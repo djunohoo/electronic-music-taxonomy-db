@@ -1,0 +1,4 @@
+{"action": "table_created", "details": {"table": "cultural_training_questions", "sql": "CREATE TABLE IF NOT EXISTS cultural_training_questions (id INTEGER PRIMARY KEY, question TEXT, answer TEXT);"}}
+{"action": "table_created", "details": {"table": "cultural_training_sessions", "sql": "CREATE TABLE IF NOT EXISTS cultural_training_sessions (id INTEGER PRIMARY KEY, user TEXT, started_at TEXT);"}}
+{"action": "table_created", "details": {"table": "cultural_tracks", "sql": "CREATE TABLE IF NOT EXISTS cultural_tracks (id INTEGER PRIMARY KEY, name TEXT, genre TEXT);"}}
+{"action": "table_created", "details": {"table": "cultural_patterns", "sql": "CREATE TABLE IF NOT EXISTS cultural_patterns (id INTEGER PRIMARY KEY, pattern TEXT, description TEXT);"}}

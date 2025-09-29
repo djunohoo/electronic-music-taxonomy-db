@@ -1,0 +1,23 @@
+{
+    "python.analysis.extraPaths": [
+        ".",
+        "src",
+        "src/models", 
+        "src/web"
+    ],
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.diagnosticMode": "workspace",
+    "python.linting.enabled": false,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": false,
+    "files.associations": {
+        "*.html": "html",
+        "*.js": "javascript"
+    },
+    "emmet.includeLanguages": {
+        "html": "html"
+    },
+    "html.validate.scripts": false,
+    "html.validate.styles": false,
+    "javascript.validate.enable": false
+}

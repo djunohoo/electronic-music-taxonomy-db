@@ -28,7 +28,18 @@ def test_new_patterns():
         "soul music track.wav",
         "tribal house track.mp3",
         "latin music track.mp3",
-        "world music track.wav"
+        "world music track.wav",
+        
+        # Test major missing genres from comprehensive analysis
+        "hardcore techno track.mp3",
+        "gabber anthem.wav",
+        "hardstyle festival track.mp3",
+        "uk garage classic.mp3",
+        "2-step garage tune.wav",
+        "psytrance journey.mp3",
+        "big beat anthem.wav",
+        "neurofunk roller.mp3",
+        "brostep drop.wav"
     ]
     
     print("🧪 TESTING NEW CLASSIFICATION PATTERNS")
