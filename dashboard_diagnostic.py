@@ -5,6 +5,8 @@ Quick Dashboard Diagnostics
 Debug the enhanced dashboard issues
 """
 
+import sys
+
 print("🔍 ENHANCED DASHBOARD DIAGNOSTICS")
 print("=" * 50)
 
