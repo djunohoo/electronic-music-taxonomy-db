@@ -406,17 +406,20 @@ class CulturalIntelligenceScanner:
             
         return classification
         
-    def process_file(self, file_path: str, session_id: int) -> Optional[Dict]:
+    def process_file(self, file_path: str, session_id: int, version: str = 'v1.7') -> Optional[Dict]:
         """Process a single audio file through the full pipeline."""
         try:
-            # Check if file already processed
+            logger.info(f"Processing: {Path(file_path).name}")
+            
+            # Check if file already processed with current version
             file_hash = self.calculate_file_hash(file_path)
             if not file_hash:
+                logger.warning(f"ERROR - Could not calculate hash for: {file_path}")
                 return None
                 
-            existing = self.db.get_track_by_hash(file_hash)
+            existing = self.db.get_track_by_hash_and_version(file_hash, version)
             if existing:
-                logger.debug(f"File already processed: {file_path}")
+                logger.info(f"SKIPPED - Already processed with {version}: {Path(file_path).name}")
                 return existing
                 
             # File stats
@@ -437,7 +440,8 @@ class CulturalIntelligenceScanner:
                 'folder_path': str(Path(file_path).parent),
                 'file_extension': Path(file_path).suffix.lower(),
                 'raw_metadata': raw_metadata,
-                'processing_status': 'discovered'
+                'processing_status': 'discovered',
+                'processing_version': version
             }
             
             # Insert into database
@@ -548,7 +552,7 @@ class CulturalIntelligenceScanner:
                         stats['files_discovered'] += 1
                         file_path = os.path.join(root, file)
                         
-                        result = self.process_file(file_path, session_id)
+                        result = self.process_file(file_path, session_id, version='v1.7')
                         if result:
                             stats['files_processed'] += 1
                         else:

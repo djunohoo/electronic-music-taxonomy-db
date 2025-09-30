@@ -93,6 +93,20 @@ class CulturalDatabaseClient:
         except Exception as e:
             logger.error(f"Error getting track by hash: {e}")
             return None
+    
+    def get_track_by_hash_and_version(self, file_hash: str, version: str, exclude_session: str = None) -> Optional[Dict]:
+        """Get track by file hash and processing version, optionally excluding tracks from current session."""
+        try:
+            response = self._make_request('GET', f'cultural_tracks?file_hash=eq.{file_hash}&processing_version=eq.{version}')
+            result = response.json()
+            if result and exclude_session:
+                # Filter out tracks from current scan session to prevent self-identification as duplicate
+                filtered_result = [track for track in result if track.get('scan_session_id') != exclude_session]
+                return filtered_result[0] if filtered_result else None
+            return result[0] if result else None
+        except Exception as e:
+            logger.error(f"Error getting track by hash and version: {e}")
+            return None
             
     def check_for_duplicate(self, file_path: str, file_hash: str, exclude_session: str = None) -> Optional[Dict]:
         """Check if file is a duplicate by comparing path AND hash - same file is NOT a duplicate."""
