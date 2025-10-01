@@ -1,11 +1,32 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 METACRATE BATCH ORCHESTRATOR
-#!/usr/bin/env python3
+============================
+Specialized batch processor for MetaCrate USERS directory.
+- Scans 250 tracks at a time
+- Triggers AI analysis and pattern learning after each batch
+- 15-minute intervals between batches
+- Automatic startup capability
+- Full integration with Cultural Intelligence System
+- Handles batch scanning, versioning, and orchestration for electronic music taxonomy database.
 """
-METACRATE BATCH ORCHESTRATOR
+import os
+import sys
+import logging
+import argparse
+import time
+from typing import List, Dict, Any, Optional
 import signal
-# Early exit handler for graceful shutdown
+import json
+import socket
+import hashlib
+from datetime import datetime, timedelta
+from pathlib import Path
+import random
+from threading import Event
+from cultural_database_client import CulturalDatabaseClient
+from cultural_intelligence_scanner import CulturalIntelligenceScanner
 def setup_early_exit_handler():
     early_exit = {'triggered': False}
     def handle_early_exit(signum, frame):
@@ -14,43 +35,11 @@ def setup_early_exit_handler():
     signal.signal(signal.SIGINT, handle_early_exit)
     signal.signal(signal.SIGTERM, handle_early_exit)
     return early_exit
-============================
-Specialized batch processor for MetaCrate USERS directory.
-- Scans 250 tracks at a time
-- Triggers AI analysis and pattern learning after each batch
-- 15-minute intervals between batches
-- Automatic startup capability
-- Full integration with Cultural Intelligence System
-"""
-
-import os
-import sys
-import time
-import json
-import logging
-import socket
-import hashlib
-import signal
-from datetime import datetime, timedelta
-from pathlib import Path
-from typing import Dict, List, Optional
-from threading import Event
-import random
-
-# Add current directory to path
-sys.path.insert(0, str(Path(__file__).parent))
-
-try:
-    from cultural_intelligence_scanner import CulturalIntelligenceScanner
-    from cultural_database_client import CulturalDatabaseClient
-    # psycopg2 not needed since we use REST API through database client
-except ImportError as e:
-    print(f"Missing dependencies: {e}")
-    print("Install with: pip install mutagen schedule requests")
-    sys.exit(1)
 
 class TwitchBot:
-    """Simple Twitch IRC bot for posting beautiful batch reports"""
+    """
+    Simple Twitch IRC bot for posting beautiful batch reports
+    """
     
     def __init__(self, username: str = None, oauth_token: str = None, channel: str = None):
         self.username = username.lower() if username else None
@@ -65,41 +54,35 @@ class TwitchBot:
         self.logger = logging.getLogger(__name__)
         
         if self.enabled:
-            self.logger.info(f"🎬 Twitch bot configured for #{self.channel}")
+            self.logger.info(f"[TWITCH] Bot configured for #{self.channel}")
         else:
-            self.logger.info("📺 Twitch integration disabled (no credentials provided)")
+            self.logger.info("[INFO] Twitch integration disabled (no credentials provided)")
         
     def connect(self) -> bool:
-        """Connect to Twitch IRC"""
+    # Connect to Twitch IRC
+    # Connect to Twitch IRC
         if not self.enabled:
             return False
-            
         try:
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.socket.settimeout(10)
-            self.socket.connect((self.server, self.port))
-            
             # Send authentication
             self.socket.send(f"PASS {self.oauth_token}\r\n".encode())
             self.socket.send(f"NICK {self.username}\r\n".encode())
             self.socket.send(f"JOIN #{self.channel}\r\n".encode())
-            
             # Wait for connection confirmation
             response = self.socket.recv(2048).decode()
             if "Welcome" in response or "001" in response:
                 self.connected = True
-                self.logger.info(f"✅ Connected to Twitch: #{self.channel}")
+                self.logger.info(f"[TWITCH] Connected to Twitch: #{self.channel}")
                 return True
             else:
                 self.logger.warning(f"Twitch connection response: {response}")
                 return False
-                
         except Exception as e:
-            self.logger.error(f"❌ Twitch connection failed: {e}")
+            self.logger.error(f"[ERROR] Twitch connection failed: {e}")
             return False
     
     def send_message(self, message: str) -> bool:
-        """Send message to Twitch chat"""
+    # Send message to Twitch chat
         if not self.enabled:
             return False
             
@@ -114,15 +97,15 @@ class TwitchBot:
                 message = message[:447] + "..."
                 
             self.socket.send(f"PRIVMSG #{self.channel} :{message}\r\n".encode())
-            self.logger.info(f"📤 Twitch: {message}")
+            self.logger.info(f"[TWITCH] {message}")
             return True
         except Exception as e:
-            self.logger.error(f"❌ Failed to send to Twitch: {e}")
+            self.logger.error(f"[ERROR] Failed to send to Twitch: {e}")
             self.connected = False
             return False
     
     def post_batch_report(self, batch_results: Dict, insights: List[str]):
-        """Post beautiful batch completion report to Twitch"""
+    # Post beautiful batch completion report to Twitch
         if not self.enabled:
             return
             
@@ -133,28 +116,28 @@ class TwitchBot:
         errors = batch_results.get('errors', 0)
         
         # Main completion message
-        # Keep emojis for Twitch (they work fine there)
-        main_msg = f"🎵 BATCH {batch_num} COMPLETE! ✨ {files_processed} tracks processed in {processing_time:.1f}s ⚡ {rate:.1f} tracks/sec"
+        # Use plain text for Windows console compatibility
+        main_msg = f"[MUSIC] BATCH {batch_num} COMPLETE! [DONE] {files_processed} tracks processed in {processing_time:.1f}s [FAST] {rate:.1f} tracks/sec"
         self.send_message(main_msg)
         time.sleep(1.5)  # Rate limiting
         
         # AI insights if available
         if insights and len(insights) > 0:
-            insight_msg = f"🧠 AI DISCOVERIES: {' | '.join(insights[:2])}"  # Top 2 insights
+            insight_msg = f"[AI] DISCOVERIES: {' | '.join(insights[:2])}"  # Top 2 insights
             self.send_message(insight_msg)
             time.sleep(1.5)
         
         # Error report if any
         if errors > 0:
-            error_msg = f"⚠️ ISSUES: {errors} files had processing errors"
+            error_msg = f"[WARN] ISSUES: {errors} files had processing errors"
             self.send_message(error_msg)
             time.sleep(1.5)
         else:
-            success_msg = f"✅ PERFECT RUN: All {files_processed} tracks processed successfully!"
+            success_msg = f"[OK] PERFECT RUN: All {files_processed} tracks processed successfully!"
             self.send_message(success_msg)
     
     def disconnect(self):
-        """Disconnect from Twitch IRC"""
+    # Disconnect from Twitch IRC
         if self.socket:
             try:
                 self.socket.close()
@@ -166,7 +149,7 @@ class TwitchBot:
 class MetaCrateBatchOrchestrator:
     """
     Orchestrates continuous batch scanning and AI analysis of MetaCrate USERS directory.
-    
+
     Features:
     - Configurable batch size (default 250, testing with 100)
     - Full AI analysis and pattern learning after each batch
@@ -184,7 +167,7 @@ class MetaCrateBatchOrchestrator:
         self.stop_event = Event()
         
         # MetaCrate configuration
-        self.metacrate_users_path = r"X:\lightbulb networ IUL Dropbox\Automation\MetaCrate\USERS"
+        self.metacrate_users_path = r"X:\lightbulb networ IUL Dropbox\Automation\MetaCrate\USERS"  # All users' tracks
         self.batch_size = batch_size
         self.analysis_interval_minutes = analysis_interval
         
@@ -199,35 +182,36 @@ class MetaCrateBatchOrchestrator:
         self.current_batch = 0
         self.session_start = datetime.now()
         
-        # Setup logging
+        # Database connection (using REST API client, not direct PostgreSQL)
+        self.conn = None
+        
+        # Setup logging with UTF-8 support
+        import sys
+        import io
+        
         log_file = Path(__file__).parent / "metacrate_orchestrator.log"
+        file_handler = logging.FileHandler(log_file, encoding='utf-8')
+        
+        # Wrap stdout with UTF-8 encoding to handle emojis
+        if hasattr(sys.stdout, 'buffer'):
+            sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+        
+        stream_handler = logging.StreamHandler(sys.stdout)
+        stream_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
         logging.basicConfig(
             level=logging.INFO,
             format='%(asctime)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler()
-            ]
+            handlers=[file_handler, stream_handler]
         )
         self.logger = logging.getLogger(__name__)
-        
-        # Database connection - Use REST API client instead of direct PostgreSQL
-        try:
-            # Test database connectivity through the existing client
-            test_count = self.db_client.get_tracks_count()
-            self.logger.info(f"Database connection established - found {test_count} tracks")
-            self.conn = None  # Don't use direct PostgreSQL connection
-        except Exception as e:
-            self.logger.error(f"Database connection failed: {e}")
-            self.conn = None
     
     def validate_metacrate_path(self) -> bool:
-        """Validate that the MetaCrate USERS directory exists"""
+        """Validate that the MetaCrate USERS path exists and is accessible"""
         if not os.path.exists(self.metacrate_users_path):
             self.logger.error(f"MetaCrate USERS path not found: {self.metacrate_users_path}")
             self.logger.error("Please ensure the network drive is mapped and accessible")
             return False
-        
+
         self.logger.info(f"MetaCrate USERS path validated: {self.metacrate_users_path}")
         return True
     
@@ -243,10 +227,27 @@ class MetaCrateBatchOrchestrator:
         except (OSError, IOError) as e:
             self.logger.warning(f"Could not calculate hash for {file_path}: {e}")
             return None
+
+    # Utility for safe text file reading
+    def safe_read_text(self, file_path):
+        try:
+            with open(file_path, 'r', encoding='utf-8', errors='replace') as f:
+                return f.read()
+        except Exception as e:
+            self.logger.warning(f"Could not read text file {file_path}: {e}")
+            return None
+
+    # Utility for safe text file writing
+    def safe_write_text(self, file_path, text):
+        try:
+            with open(file_path, 'w', encoding='utf-8', errors='replace') as f:
+                f.write(text)
+        except Exception as e:
+            self.logger.warning(f"Could not write text file {file_path}: {e}")
     
     def get_unprocessed_files_batch(self) -> List[str]:
         """Get next batch of unprocessed audio files from MetaCrate USERS directory (v1.7 version-based)"""
-        audio_extensions = {'.mp3', '.flac', '.wav', '.m4a', '.aac', '.ogg'}
+        audio_extensions = {'.mp3', '.flac', '.wav', '.m4a', '.aac', '.aif', '.aiff', '.ogg'}
         unprocessed_files = []
         
         # Get list of already processed file paths from database (VERSION-BASED RESCANNING)
@@ -254,42 +255,36 @@ class MetaCrateBatchOrchestrator:
         processed_paths = set()
         processed_hashes = set()
         
-        if self.conn:
-            try:
-                cursor = self.conn.cursor()
-                
-                # Get both file paths and hashes of processed files for efficient checking
-                cursor.execute("""
-                    SELECT DISTINCT file_path, file_hash 
-                    FROM cultural_tracks 
-                    WHERE file_path LIKE %s 
-                    AND processing_version = %s
-                    AND file_hash IS NOT NULL
-                """, [f"{self.metacrate_users_path}%", self.processing_version])
-                
-                for row in cursor.fetchall():
-                    if row[0]:  # file_path
-                        processed_paths.add(row[0])
-                    if row[1]:  # file_hash
-                        processed_hashes.add(row[1])
-                
-                self.logger.info(f"Found {len(processed_paths)} file paths already processed with {self.processing_version}")
-                self.logger.info(f"Found {len(processed_hashes)} file hashes already processed with {self.processing_version}")
-                
-                # Also log how many files need rescanning due to version differences
-                cursor.execute("""
-                    SELECT COUNT(*) as old_version_count
-                    FROM cultural_tracks 
-                    WHERE file_path LIKE %s 
-                    AND (processing_version != %s OR processing_version IS NULL)
-                """, [f"{self.metacrate_users_path}%", self.processing_version])
-                
-                result = cursor.fetchone()
-                if result and result[0] > 0:
-                    self.logger.info(f"Found {result[0]} files that need rescanning (older versions)")
-                
-            except Exception as e:
-                self.logger.warning(f"Could not check processed files: {e}")
+        # Use REST API client instead of direct database connection
+        try:
+            # Query for tracks with current processing version using REST API
+            # Build query to get file_path and file_hash where processing_version matches
+            endpoint = f'cultural_tracks?processing_version=eq.{self.processing_version}&file_hash=not.is.null&select=file_path,file_hash'
+            response = self.db_client._make_request('GET', endpoint)
+            tracks = response.json()
+            
+            for track in tracks:
+                if track.get('file_path'):
+                    # Only add to processed_paths if it's in our scan directory
+                    if track['file_path'].startswith(self.metacrate_users_path):
+                        processed_paths.add(track['file_path'])
+                if track.get('file_hash'):
+                    processed_hashes.add(track['file_hash'])
+            
+            self.logger.info(f"Found {len(processed_paths)} file paths already processed with {self.processing_version}")
+            self.logger.info(f"Found {len(processed_hashes)} file hashes already processed with {self.processing_version}")
+            
+            # Also check for files that need rescanning (different version or NULL)
+            old_version_endpoint = f'cultural_tracks?processing_version=not.eq.{self.processing_version}&select=id'
+            old_response = self.db_client._make_request('GET', old_version_endpoint)
+            old_tracks = old_response.json()
+            
+            if old_tracks and len(old_tracks) > 0:
+                self.logger.info(f"Found {len(old_tracks)} files that need rescanning (older versions)")
+            
+        except Exception as e:
+            self.logger.warning(f"Could not check processed files via REST API: {e}")
+            self.logger.info("Continuing with filesystem scan (all files will be considered unprocessed)")
         
         # Find audio files, checking against processed list
         files_found = 0
@@ -353,7 +348,7 @@ class MetaCrateBatchOrchestrator:
     def process_batch(self, files: List[str]) -> Dict:
         """Process a batch of files using the AI scanner"""
         self.current_batch += 1
-        self.logger.info(f"🎵 Starting Batch {self.current_batch} - Processing {len(files)} files")
+        self.logger.info(f"[BATCH] Starting Batch {self.current_batch} - Processing {len(files)} files")
         
         batch_start = datetime.now()
         
@@ -441,28 +436,28 @@ class MetaCrateBatchOrchestrator:
         
         try:
             # 1. Detect duplicates from recent batch
-            self.logger.info("   🔍 Analyzing duplicates...")
+            self.logger.info("   [SCAN] Analyzing duplicates...")
             duplicates = self.ai_scanner.detect_duplicates()
             duplicate_count = len(duplicates)
             
             # 2. Build/update artist profiles with new data
-            self.logger.info("   👤 Building artist intelligence profiles...")
+            self.logger.info("   [ARTIST] Building artist intelligence profiles...")
             self.ai_scanner.build_all_artist_profiles()
             
             # 3. Build/update label profiles
-            self.logger.info("   📀 Building label intelligence profiles...")
+            self.logger.info("   [LABEL] Building label intelligence profiles...")
             self.ai_scanner.build_all_label_profiles()
             
             # 4. Advanced pattern learning from recent classifications
-            self.logger.info("   🎯 Learning classification patterns...")
+            self.logger.info("   [LEARN] Learning classification patterns...")
             new_patterns = self._learn_patterns_from_recent_data()
             
             # 5. Update confidence scores based on new patterns
-            self.logger.info("   📊 Updating confidence scores...")
+            self.logger.info("   [STATS] Updating confidence scores...")
             self._update_confidence_scores()
             
             # 6. Generate intelligence insights
-            self.logger.info("   💡 Generating intelligence insights...")
+            self.logger.info("   [INSIGHTS] Generating intelligence insights...")
             insights = self._generate_intelligence_insights()
             
             analysis_time = (datetime.now() - analysis_start).total_seconds()
@@ -475,7 +470,7 @@ class MetaCrateBatchOrchestrator:
             return insights
             
         except Exception as e:
-            self.logger.error(f"❌ AI Analysis failed: {e}")
+            self.logger.error(f"[ERROR] AI Analysis failed: {e}")
             return []
     
     def _learn_patterns_from_recent_data(self) -> int:
@@ -488,7 +483,7 @@ class MetaCrateBatchOrchestrator:
         try:
             # Pattern learning disabled for REST API mode
             # TODO: Convert PostgreSQL queries to REST API calls
-            self.logger.info("🎓 Pattern learning temporarily disabled (REST API mode)")
+            self.logger.info("[DISABLED] Pattern learning temporarily disabled (REST API mode)")
             recent_classifications = []
             
             for classification in recent_classifications:
@@ -572,7 +567,7 @@ class MetaCrateBatchOrchestrator:
         try:
             # Batch insights disabled for REST API mode
             # TODO: Convert PostgreSQL queries to REST API calls
-            self.logger.info("📊 Batch insights temporarily disabled (REST API mode)")
+            self.logger.info("[DISABLED] Batch insights temporarily disabled (REST API mode)")
             
             # Simple fallback insights
             insights.append(f"Batch analysis completed")
@@ -585,10 +580,10 @@ class MetaCrateBatchOrchestrator:
     
     def run_continuous_batches(self, early_exit=None):
         """Main loop - run batches continuously with 15-minute intervals. Supports early_exit dict for graceful shutdown."""
-        self.logger.info("🚀 Starting MetaCrate Batch Orchestrator")
-        self.logger.info(f"📁 Scan Path: {self.metacrate_users_path}")
-        self.logger.info(f"📊 Batch Size: {self.batch_size} tracks")
-        self.logger.info(f"⏰ Interval: {self.analysis_interval_minutes} minutes")
+        self.logger.info(">> Starting MetaCrate Batch Orchestrator")
+        self.logger.info(f"   Scan Path: {self.metacrate_users_path}")
+        self.logger.info(f"   Batch Size: {self.batch_size} tracks")
+        self.logger.info(f"   Interval: {self.analysis_interval_minutes} minutes")
 
         # Validate path on startup
         if not self.validate_metacrate_path():
@@ -599,7 +594,7 @@ class MetaCrateBatchOrchestrator:
 
         while self.running and not self.stop_event.is_set():
             if early_exit and early_exit.get('triggered'):
-                self.logger.info("🛑 Early exit requested. Ending after current batch.")
+                self.logger.info("[STOP] Early exit requested. Ending after current batch.")
                 break
             try:
                 # Get next batch of files
@@ -637,32 +632,32 @@ class MetaCrateBatchOrchestrator:
 
                 # Check for early exit after batch
                 if early_exit and early_exit.get('triggered'):
-                    self.logger.info("🛑 Early exit requested. Stopping after this batch.")
+                    self.logger.info("[STOP] Early exit requested. Stopping after this batch.")
                     break
 
                 # Wait for the analysis interval before next batch
                 if self.running:
                     wait_seconds = self.analysis_interval_minutes * 60
-                    self.logger.info(f"⏳ Waiting {self.analysis_interval_minutes} minutes for AI analysis to complete...")
+                    self.logger.info(f"[WAIT] Waiting {self.analysis_interval_minutes} minutes for AI analysis to complete...")
                     self.logger.info(f"   Next batch will start at: {(datetime.now() + timedelta(seconds=wait_seconds)).strftime('%Y-%m-%d %H:%M:%S')}")
 
                     if self.stop_event.wait(wait_seconds):
                         break
 
             except KeyboardInterrupt:
-                self.logger.info("🛑 Shutdown requested by user")
+                self.logger.info("[STOP] Shutdown requested by user")
                 break
             except Exception as e:
-                self.logger.error(f"❌ Batch processing error: {e}")
+                self.logger.error(f"[ERROR] Batch processing error: {e}")
                 # Wait 5 minutes before retrying
                 if self.stop_event.wait(300):
                     break
 
-        self.logger.info("🏁 MetaCrate Batch Orchestrator stopped")
+        self.logger.info("[DONE] MetaCrate Batch Orchestrator stopped")
     
     def stop(self):
         """Stop the orchestrator gracefully"""
-        self.logger.info("🛑 Stopping MetaCrate Batch Orchestrator...")
+        self.logger.info("[STOP] Stopping MetaCrate Batch Orchestrator...")
         self.running = False
         self.stop_event.set()
     
@@ -706,7 +701,7 @@ def main():
     if args.test:
         batch_size = 100
         interval = 5
-        print("🧪 TEST MODE: 100 tracks per batch, 5-minute intervals")
+        print("TEST MODE: 100 tracks per batch, 5-minute intervals")
     else:
         batch_size = args.batch_size
         interval = args.interval
@@ -715,25 +710,25 @@ def main():
     twitch_bot = None
     if args.twitch_username and args.twitch_oauth and args.twitch_channel:
         twitch_bot = TwitchBot(args.twitch_username, args.twitch_oauth, args.twitch_channel)
-        print(f"🎬 Twitch integration enabled for #{args.twitch_channel}")
+        print(f"[TWITCH] Integration enabled for #{args.twitch_channel}")
     elif args.twitch_username or args.twitch_oauth or args.twitch_channel:
-        print("⚠️ Partial Twitch credentials provided - need all three: --twitch-username, --twitch-oauth, --twitch-channel")
+        print("[WARNING] Partial Twitch credentials provided - need all three: --twitch-username, --twitch-oauth, --twitch-channel")
 
     early_exit = setup_early_exit_handler()
 
     orchestrator = MetaCrateBatchOrchestrator(batch_size=batch_size, analysis_interval=interval, twitch_bot=twitch_bot)
 
     if args.start:
-        print(f"🚀 Starting MetaCrate Batch Orchestrator v1.7")
-        print(f"📊 Configuration: {batch_size} tracks/batch, {interval}-minute intervals")
-        print(f"🔄 Version-based rescanning: Only processes tracks not marked as v1.7")
+        print(f">> Starting MetaCrate Batch Orchestrator v1.7")
+        print(f"   Configuration: {batch_size} tracks/batch, {interval}-minute intervals")
+        print(f"   Version-based rescanning: Only processes tracks not marked as v1.7")
         try:
             orchestrator.run_continuous_batches(early_exit=early_exit)
         except KeyboardInterrupt:
             orchestrator.stop()
     elif args.status:
         status = orchestrator.get_status()
-        print(json.dumps(status, indent=2))
+        print(json.dumps(status, indent=2, ensure_ascii=False))
     else:
         print("MetaCrate Batch Orchestrator v1.7")
         print("=====================================")
@@ -757,10 +752,10 @@ def main():
         print("  python metacrate_batch_orchestrator.py --batch-size 50 --start    # Small batches")
         print()
         print("Twitch Integration:")
-        print("  python metacrate_batch_orchestrator.py --start \")
-        print("    --twitch-username YourBotName \")
-        print("    --twitch-oauth oauth:your_token_here \")
-        print("    --twitch-channel your_channel          # Posts beautiful batch reports to chat!")
+    print("  python metacrate_batch_orchestrator.py --start ")
+    print("    --twitch-username YourBotName")
+    print("    --twitch-oauth oauth:your_token_here")
+    print("    --twitch-channel your_channel          # Posts beautiful batch reports to chat!")
 
 if __name__ == '__main__':
     main()

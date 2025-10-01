@@ -49,33 +49,43 @@ class CulturalDatabaseClient:
     # DISCOVERED TRACKS (cultural_tracks)
     # ================================
     
+
     def create_discovered_track(self, track_data: Dict, session_id: str = None) -> Optional[int]:
-        """Create new discovered track record with optional session tracking."""
+        """Create new discovered track record with optional session tracking and version update."""
         try:
+            # Use correct version
+            version = 'v1.8'
+            file_path = track_data['file_path']
+            file_hash = track_data['file_hash']
+            # Check if already exists
+            existing = self.get_track_by_hash(file_hash)
+            if existing:
+                # If version matches, skip
+                if existing.get('processing_version') == version:
+                    logger.info(f"SKIP: {file_path} already scanned with version {version}")
+                    return None
+                # If version differs, re-scan and update
+                logger.info(f"RESCAN: {file_path} was scanned with {existing.get('processing_version')}, rescanning with {version}")
+                # Do NOT return here; allow full scan and update below
             # Map to existing cultural_tracks structure
             cultural_track = {
-                'file_path': track_data['file_path'],
-                'file_hash': track_data['file_hash'],
+                'file_path': file_path,
+                'file_hash': file_hash,
                 'file_size': track_data['file_size'],
                 'file_modified': track_data['file_modified'],
                 'raw_metadata': track_data.get('raw_metadata', {}),
                 'filename': track_data['filename'],
                 'folder_path': track_data['folder_path'],
                 'file_extension': track_data['file_extension'],
-                'processing_version': 'v4.0_scanner'
+                'processing_version': version
             }
-            
-            # Add session tracking if provided
             if session_id:
                 cultural_track['scan_session_id'] = session_id
-            
             response = self._make_request('POST', 'cultural_tracks', json=cultural_track)
             result = response.json()
-            
             if isinstance(result, list) and len(result) > 0:
                 return result[0]['id']
             return None
-            
         except Exception as e:
             logger.error(f"Error creating discovered track: {e}")
             return None
@@ -243,7 +253,7 @@ class CulturalDatabaseClient:
                 'overall_confidence': classification_data.get('overall_confidence', 0.0),
                 'classification_source': 'intelligence_scanner',
                 'needs_review': classification_data.get('needs_review', False),
-                'human_validated': False
+                'human_validated': classification_data.get('human_validated', False)
             }
             
             if existing:

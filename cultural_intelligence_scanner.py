@@ -406,7 +406,7 @@ class CulturalIntelligenceScanner:
             
         return classification
         
-    def process_file(self, file_path: str, session_id: int, version: str = 'v1.7') -> Optional[Dict]:
+    def process_file(self, file_path: str, session_id: int, version: str = 'v1.8') -> Optional[Dict]:
         """Process a single audio file through the full pipeline."""
         try:
             logger.info(f"Processing: {Path(file_path).name}")
@@ -443,6 +443,20 @@ class CulturalIntelligenceScanner:
                 'processing_status': 'discovered',
                 'processing_version': version
             }
+            
+            # SANITIZE METADATA: Remove null bytes that PostgreSQL can't handle
+            def sanitize_data(data):
+                """Recursively remove null bytes from strings"""
+                if isinstance(data, str):
+                    return data.replace('\x00', '').replace('\u0000', '')
+                elif isinstance(data, dict):
+                    return {k: sanitize_data(v) for k, v in data.items()}
+                elif isinstance(data, list):
+                    return [sanitize_data(item) for item in data]
+                else:
+                    return data
+            
+            track_data = sanitize_data(track_data)
             
             # Insert into database
             track_id = self.db.create_discovered_track(track_data)
@@ -552,7 +566,7 @@ class CulturalIntelligenceScanner:
                         stats['files_discovered'] += 1
                         file_path = os.path.join(root, file)
                         
-                        result = self.process_file(file_path, session_id, version='v1.7')
+                        result = self.process_file(file_path, session_id, version='v1.8')
                         if result:
                             stats['files_processed'] += 1
                         else:
