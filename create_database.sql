@@ -1,8 +1,9 @@
 -- =====================================================
 -- STEP 1: CREATE DATABASE FOR CULTURAL INTELLIGENCE SYSTEM
 -- =====================================================
--- Execute this FIRST as superuser (postgres) on your Supabase instance
--- Connect to: 172.22.17.138:5432 as user 'postgres'
+-- Execute this FIRST as superuser (postgres) on your database instance
+-- SECURITY: Replace 'your_secure_password_here' with an actual secure password
+-- DO NOT commit this file with real passwords to version control
 
 -- Create the database
 CREATE DATABASE cultural_intelligence
@@ -19,6 +20,7 @@ COMMENT ON DATABASE cultural_intelligence
     IS 'Cultural Intelligence System v3.2 - Electronic Music Taxonomy Database';
 
 -- Create a dedicated user for the application (optional but recommended)
+-- IMPORTANT: Replace 'your_secure_password_here' with a strong password
 CREATE USER cultural_intel_user WITH PASSWORD 'your_secure_password_here';
 
 -- Grant all privileges on the new database to the user

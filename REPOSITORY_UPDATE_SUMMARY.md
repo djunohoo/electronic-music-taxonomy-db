@@ -1,5 +1,8 @@
 # Repository Update Summary - September 28, 2025
 
+> **⚠️ SECURITY NOTE**: This document contains historical IP addresses and configuration examples. 
+> For current deployment, use environment variables as described in [SECURITY.md](SECURITY.md) and [SECURITY_MIGRATION.md](SECURITY_MIGRATION.md).
+
 ## 🚀 Complete Cultural Intelligence System v3.2 Successfully Deployed
 
 ### 📊 Repository Statistics

@@ -1,0 +1,9 @@
+{
+  "batch_size": 200,
+  "parallel_workers": 8,
+  "save_interval": 100,
+  "algorithms": [
+    "spectral_custom",
+    "file_hash"
+  ]
+}

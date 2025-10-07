@@ -2,18 +2,39 @@
 # =====================================================
 # Fresh Database Creation Script for Cultural Intelligence System
 # =====================================================
-# Run this on your Supabase server at 172.22.17.138
+# SECURITY: This script requires environment variables to be set
+# Set DB_PASSWORD before running: export DB_PASSWORD="your_password"
+
+# Check for required environment variables
+if [ -z "$DB_HOST" ]; then
+    echo "❌ Error: DB_HOST environment variable not set"
+    echo "Please set: export DB_HOST=your_database_host"
+    exit 1
+fi
+
+if [ -z "$DB_PASSWORD" ]; then
+    echo "❌ Error: DB_PASSWORD environment variable not set"
+    echo "Please set: export DB_PASSWORD=your_secure_password"
+    exit 1
+fi
+
+DB_NAME="${DB_NAME:-cultural_intelligence}"
+DB_USER="${DB_USER:-cultural_intel_user}"
 
 echo "🎵 Creating Fresh Cultural Intelligence Database..."
 echo "=================================================="
+echo "Host: $DB_HOST"
+echo "Database: $DB_NAME"
+echo "User: $DB_USER"
+echo ""
 
 # Connect to PostgreSQL and create database
-psql -U postgres -d postgres -c "
+psql -h "$DB_HOST" -U postgres -d postgres -c "
 -- Drop existing database if it exists (CAUTION!)
-DROP DATABASE IF EXISTS cultural_intelligence;
+DROP DATABASE IF EXISTS $DB_NAME;
 
 -- Create fresh database
-CREATE DATABASE cultural_intelligence
+CREATE DATABASE $DB_NAME
     WITH 
     OWNER = postgres
     ENCODING = 'UTF8'
@@ -23,35 +44,34 @@ CREATE DATABASE cultural_intelligence
     CONNECTION LIMIT = -1;
 
 -- Add comment
-COMMENT ON DATABASE cultural_intelligence 
+COMMENT ON DATABASE $DB_NAME 
     IS 'Cultural Intelligence System v3.2 - Electronic Music Taxonomy Database - Fresh Install';
 
 -- Create dedicated user
-DROP USER IF EXISTS cultural_intel_user;
-CREATE USER cultural_intel_user WITH PASSWORD 'CulturalIntel2025!';
+DROP USER IF EXISTS $DB_USER;
+CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
 
 -- Grant privileges
-GRANT ALL PRIVILEGES ON DATABASE cultural_intelligence TO cultural_intel_user;
+GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;
 "
 
 echo "✅ Database created successfully!"
-echo "🔑 Database: cultural_intelligence"
-echo "🔑 User: cultural_intel_user"
-echo "🔑 Password: CulturalIntel2025!"
+echo "🔑 Database: $DB_NAME"
+echo "🔑 User: $DB_USER"
 echo ""
 echo "Next step: Connect to new database and run schema..."
 
 # Now connect to the new database and set up schema permissions
-psql -U postgres -d cultural_intelligence -c "
+psql -h "$DB_HOST" -U postgres -d "$DB_NAME" -c "
 -- Grant schema permissions
-GRANT USAGE ON SCHEMA public TO cultural_intel_user;
-GRANT CREATE ON SCHEMA public TO cultural_intel_user;
-GRANT ALL ON SCHEMA public TO cultural_intel_user;
+GRANT USAGE ON SCHEMA public TO $DB_USER;
+GRANT CREATE ON SCHEMA public TO $DB_USER;
+GRANT ALL ON SCHEMA public TO $DB_USER;
 
 -- Set default privileges for future tables
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO cultural_intel_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO cultural_intel_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON FUNCTIONS TO cultural_intel_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO $DB_USER;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO $DB_USER;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON FUNCTIONS TO $DB_USER;
 
 -- Enable extensions
 CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";

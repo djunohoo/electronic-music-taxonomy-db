@@ -1,7 +1,6 @@
 -- =====================================================
 -- CULTURAL INTELLIGENCE SYSTEM v3.2 - DATABASE SCHEMA  
 -- =====================================================
--- Self-hosted Supabase at 172.22.17.138
 -- Complete electronic music taxonomy and intelligence system
 -- 
 -- PREREQUISITE: Database must exist! Run create_database.sql first

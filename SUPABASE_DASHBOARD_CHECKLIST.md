@@ -4,7 +4,9 @@
 ### 📊 **Dashboard Navigation Steps**
 
 #### **Step 1: Access Your Dashboard**
-Navigate to: `http://172.22.17.138:8000/dashboard`
+Navigate to: `http://YOUR_HOST:8000/dashboard`
+
+**Replace YOUR_HOST with your actual database server hostname or IP address**
 
 #### **Step 2: Project Overview Check**
 1. **Left Sidebar > Home**
@@ -60,7 +62,7 @@ SELECT
 1. **Go to: Settings > API**
 2. **Copy these values:**
    ```
-   URL: http://172.22.17.138:8000
+   URL: http://YOUR_HOST:8000
    Anon Key: [copy the long key]
    Service Role Key: [copy this too - for admin operations]
    ```
@@ -73,7 +75,7 @@ SELECT
 1. **Go to: Settings > Database**
 2. **Connection Details:**
    ```
-   Host: 172.22.17.138
+   Host: YOUR_HOST
    Port: 5432
    Database: [note the current database name]
    Username: [note current user]
