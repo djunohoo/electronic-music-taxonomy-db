@@ -7,6 +7,9 @@
 secrets/
 credentials/
 
+# Configuration files with sensitive data
+taxonomy_config.json
+
 # Database
 *.db
 *.sqlite
