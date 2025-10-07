@@ -2,11 +2,11 @@
 -- MANUAL FRESH DATABASE CREATION COMMANDS
 -- =====================================================
 -- Run these commands ONE BY ONE via command line psql
--- Connect: ssh user@172.22.17.138
--- Then: psql -U postgres -d postgres
+-- SECURITY: Replace 'your_secure_password' with your actual password
+-- DO NOT commit this file with real passwords
 
 -- Step 1: Connect as superuser to default database
--- psql -U postgres -d postgres
+-- psql -h YOUR_HOST -U postgres -d postgres
 
 -- Step 2: Drop existing database if needed (CAREFUL!)
 DROP DATABASE IF EXISTS cultural_intelligence;
@@ -22,8 +22,9 @@ CREATE DATABASE cultural_intelligence
     CONNECTION LIMIT = -1;
 
 -- Step 4: Create user (run this command alone)
+-- IMPORTANT: Replace 'your_secure_password' with a strong password
 DROP USER IF EXISTS cultural_intel_user;
-CREATE USER cultural_intel_user WITH PASSWORD 'CulturalIntel2025!';
+CREATE USER cultural_intel_user WITH PASSWORD 'your_secure_password';
 
 -- Step 5: Grant database privileges (run this command alone)
 GRANT ALL PRIVILEGES ON DATABASE cultural_intelligence TO cultural_intel_user;

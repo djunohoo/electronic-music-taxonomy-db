@@ -2,6 +2,8 @@
 -- FRESH DATABASE CREATION - Command Line Version
 -- =====================================================
 -- Run these commands ONE BY ONE via psql
+-- SECURITY: Replace 'your_secure_password' with your actual password
+-- DO NOT commit this file with real passwords
 
 -- Step 1: Drop if exists (optional - only if you want to start completely fresh)
 -- DROP DATABASE IF EXISTS cultural_intelligence;
@@ -21,8 +23,9 @@ COMMENT ON DATABASE cultural_intelligence
     IS 'Cultural Intelligence System v3.2 - Electronic Music Taxonomy Database - FRESH CLEAN INSTALL';
 
 -- Step 4: Create dedicated user
+-- IMPORTANT: Replace 'your_secure_password' with a strong password
 CREATE USER cultural_intel_user WITH 
-    PASSWORD 'CulturalIntel2025!' 
+    PASSWORD 'your_secure_password' 
     CREATEDB 
     LOGIN;
 

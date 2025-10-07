@@ -2,7 +2,18 @@
 # =====================================================
 # Docker-based Fresh Database Creation
 # =====================================================
-# If your Supabase is running in Docker
+# SECURITY: This script requires environment variables to be set
+# Set DB_PASSWORD before running: export DB_PASSWORD="your_password"
+
+# Check for required environment variables
+if [ -z "$DB_PASSWORD" ]; then
+    echo "❌ Error: DB_PASSWORD environment variable not set"
+    echo "Please set: export DB_PASSWORD=your_secure_password"
+    exit 1
+fi
+
+DB_NAME="${DB_NAME:-cultural_intelligence}"
+DB_USER="${DB_USER:-cultural_intel_user}"
 
 echo "🐳 Creating fresh database via Docker..."
 
@@ -21,10 +32,10 @@ echo "✅ Found PostgreSQL container: $CONTAINER_ID"
 # Execute database creation inside container
 docker exec -it $CONTAINER_ID psql -U postgres -d postgres -c "
 -- Drop existing if needed
-DROP DATABASE IF EXISTS cultural_intelligence;
+DROP DATABASE IF EXISTS $DB_NAME;
 
 -- Create fresh database
-CREATE DATABASE cultural_intelligence
+CREATE DATABASE $DB_NAME
     WITH 
     OWNER = postgres
     ENCODING = 'UTF8'
@@ -34,20 +45,20 @@ CREATE DATABASE cultural_intelligence
     CONNECTION LIMIT = -1;
 
 -- Create user
-DROP USER IF EXISTS cultural_intel_user;
-CREATE USER cultural_intel_user WITH PASSWORD 'CulturalIntel2025!';
+DROP USER IF EXISTS $DB_USER;
+CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
 
 -- Grant privileges
-GRANT ALL PRIVILEGES ON DATABASE cultural_intelligence TO cultural_intel_user;
+GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;
 "
 
 echo "✅ Database created via Docker!"
 
 # Set up permissions in new database
-docker exec -it $CONTAINER_ID psql -U postgres -d cultural_intelligence -c "
+docker exec -it $CONTAINER_ID psql -U postgres -d "$DB_NAME" -c "
 -- Schema permissions
-GRANT ALL ON SCHEMA public TO cultural_intel_user;
-ALTER DEFAULT PRIVILEGES GRANT ALL ON TABLES TO cultural_intel_user;
+GRANT ALL ON SCHEMA public TO $DB_USER;
+ALTER DEFAULT PRIVILEGES GRANT ALL ON TABLES TO $DB_USER;
 
 -- Extensions
 CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";
@@ -57,8 +68,7 @@ CREATE EXTENSION IF NOT EXISTS \"pg_trgm\";
 echo "🚀 Fresh database ready for schema installation!"
 echo ""
 echo "🔑 Connection details:"
-echo "   Database: cultural_intelligence"
-echo "   User: cultural_intel_user"  
-echo "   Password: CulturalIntel2025!"
-echo "   Host: 172.22.17.138"
-echo "   Port: 5432"
+echo "   Database: $DB_NAME"
+echo "   User: $DB_USER"
+echo "   Host: (from your Docker configuration)"
+echo "   Port: (from your Docker configuration)"

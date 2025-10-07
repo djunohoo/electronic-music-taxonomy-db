@@ -35,12 +35,13 @@ def main():
     schema = DatabaseSchema()
     
     db_url = config.config["supabase"]["url"]
-    print(f"📡 Connecting to: {db_url}")
+    print(f"📡 Connecting to database...")
     
     if not db_url or db_url == "your-database-url-here":
         print("❌ Database URL not configured!")
-        print("Using default: postgresql://postgres:BvbMRx6lqbbRK5e@172.22.17.138:5432/postgres")
-        db_url = "postgresql://postgres:BvbMRx6lqbbRK5e@172.22.17.138:5432/postgres"
+        print("Please set DB_URL in your .env file")
+        print("Example: DB_URL=postgresql://user:password@host:5432/database")
+        sys.exit(1)
     
     try:
         # Connect to database

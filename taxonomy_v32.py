@@ -26,6 +26,10 @@ from datetime import datetime
 from collections import defaultdict
 import re
 from typing import Dict, List, Optional, Tuple
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Add requirements for production deployment
 REQUIRED_PACKAGES = [
@@ -47,8 +51,8 @@ class TaxonomyConfig:
         """Load configuration from file or create defaults"""
         default_config = {
             "supabase": {
-                "url": "postgresql://postgres:BvbMRx6lqbbRK5e@172.22.17.138:5432/postgres",
-                "key": os.getenv("SUPABASE_KEY", "your-anon-key-here")
+                "url": os.getenv("DB_URL", "postgresql://user:password@localhost:5432/cultural_intelligence"),
+                "key": os.getenv("SUPABASE_ANON_KEY", "your-anon-key-here")
             },
             "scanning": {
                 "supported_formats": [".mp3", ".flac", ".wav", ".m4a", ".aac", ".ogg"],
@@ -77,13 +81,13 @@ class TaxonomyConfig:
                 "metadata_refresh_days": 7
             },
             "api": {
-                "host": "172.22.17.37",
-                "port": 5000,
-                "debug": False
+                "host": os.getenv("API_HOST", "localhost"),
+                "port": int(os.getenv("API_PORT", 5000)),
+                "debug": os.getenv("API_DEBUG", "false").lower() == "true"
             },
             "paths": {
-                "scan_root": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS",
-                "current_target": "X:\\lightbulb networ IUL Dropbox\\Automation\\MetaCrate\\USERS\\DJUNOHOO\\1-Originals"
+                "scan_root": os.getenv("SCAN_ROOT", ""),
+                "current_target": os.getenv("SCAN_TARGET", "")
             }
         }
         

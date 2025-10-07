@@ -1,9 +1,9 @@
 # 🎵 Cultural Intelligence System v3.2 - Database Setup Guide
 
-## Self-Hosted Supabase Database Creation at 172.22.17.138
+## Database Setup
 
 ### 📋 Prerequisites
-- Access to your self-hosted Supabase PostgreSQL instance
+- Access to your PostgreSQL database instance
 - Admin/superuser credentials (usually `postgres` user)
 - psql client or database management tool
 
@@ -11,13 +11,11 @@
 
 #### **Step 1: Connect to PostgreSQL**
 ```bash
-# Connect to your Supabase PostgreSQL instance
-psql -h 172.22.17.138 -p 5432 -U postgres -d postgres
+# Connect to your PostgreSQL instance
+# Replace YOUR_HOST with your database hostname or IP
+psql -h YOUR_HOST -p 5432 -U postgres -d postgres
 ```
-**Or via your Supabase dashboard SQL editor at:**
-```
-http://172.22.17.138:8000/dashboard
-```
+**Or via your database dashboard/SQL editor**
 
 #### **Step 2: Create the Database**
 Copy and paste the contents of `create_database.sql`:
@@ -36,6 +34,7 @@ CREATE DATABASE cultural_intelligence
 COMMENT ON DATABASE cultural_intelligence 
     IS 'Cultural Intelligence System v3.2 - Electronic Music Taxonomy Database';
 
+-- IMPORTANT: Replace 'your_secure_password_here' with a strong password
 CREATE USER cultural_intel_user WITH PASSWORD 'your_secure_password_here';
 GRANT ALL PRIVILEGES ON DATABASE cultural_intelligence TO cultural_intel_user;
 ```
@@ -71,19 +70,22 @@ SELECT COUNT(*) FROM patterns;
 -- patterns: 12 records
 ```
 
-### 🔑 Get Your Supabase Credentials
+### 🔑 Get Your Database Credentials
 
-After setup, you'll need:
+After setup, configure your `.env` file:
 
-1. **Database URL**: `postgresql://cultural_intel_user:your_password@172.22.17.138:5432/cultural_intelligence`
-2. **Supabase API URL**: `http://172.22.17.138:8000`
-3. **Anon Key**: Found in your Supabase dashboard settings
+```bash
+# Copy .env.example to .env and fill in your values
+DB_URL=postgresql://cultural_intel_user:your_password@YOUR_HOST:5432/cultural_intelligence
+SUPABASE_URL=http://YOUR_HOST:8000
+SUPABASE_ANON_KEY=your_anon_key_from_dashboard
+```
 
 ### ⚡ Quick Commands Summary
 
 ```bash
-# 1. Connect as superuser
-psql -h 172.22.17.138 -p 5432 -U postgres -d postgres
+# 1. Connect as superuser (replace YOUR_HOST)
+psql -h YOUR_HOST -p 5432 -U postgres -d postgres
 
 # 2. Create database (paste create_database.sql)
 
@@ -100,7 +102,7 @@ SELECT COUNT(*) FROM label_profiles;
 ### 🎯 Next Steps
 
 After database setup:
-1. Update your system config with credentials
+1. Update your `.env` file with credentials
 2. Test the MetaCrate API connection
 3. Run your first music collection scan
 
