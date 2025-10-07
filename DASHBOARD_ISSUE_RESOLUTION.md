@@ -1,5 +1,8 @@
 # Cultural Intelligence Dashboard - Issue Resolution Summary
 
+> **⚠️ SECURITY NOTE**: This document contains historical IP addresses for reference only. 
+> Use environment variables for actual deployment as described in [SECURITY.md](SECURITY.md).
+
 ## Issues Found & Fixed 
 
 ### 🔍 **Scanner Errors (41 errors during last scan)**

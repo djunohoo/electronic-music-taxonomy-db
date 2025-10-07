@@ -2,16 +2,40 @@
 
 ## Important Notice
 
-**This repository should be PRIVATE.** It contains sensitive configuration for a production music taxonomy system.
+**⚠️ THIS REPOSITORY MUST BE PRIVATE ⚠️**
 
-## Removed Security Issues (Fixed)
+This repository contains sensitive configuration for a production music taxonomy system.
 
-This repository previously contained:
+## Security Status
+
+### ✅ Core System Files - SECURED
+The following critical files have been updated to use environment variables:
+- `taxonomy_v32.py` - Main configuration
+- `install_cultural_intelligence.py` - Database setup
+- `create_fresh_database.sh` - Database creation
+- `docker_create_database.sh` - Docker setup
+- All SQL setup files
+- Core documentation files
+
+### ⚠️ Legacy/Example Files - May Contain Historical References
+Some files may still contain historical IP addresses or example configurations:
+- Dashboard implementations
+- Test files
+- Example scripts
+- Historical documentation
+
+**These should be updated to use environment variables before use in production.**
+
+Run `python security_audit.py` to identify files that need updates.
+
+## Removed Security Issues (Fixed in Core System)
+
+Previously, core system files contained:
 - ❌ Hardcoded database passwords 
 - ❌ Hardcoded IP addresses
 - ❌ Production credentials in source code
 
-**These have been removed and replaced with environment variables.**
+**These have been removed from core files and replaced with environment variables.**
 
 ## Secure Configuration
 

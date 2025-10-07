@@ -2,9 +2,16 @@
 
 [![Feedback Analytics](https://github.com/djunohoo/electronic-music-taxonomy-db/actions/workflows/feedback_analytics.yml/badge.svg)](https://github.com/djunohoo/electronic-music-taxonomy-db/actions/workflows/feedback_analytics.yml)
 
-Comprehensive Electronic Music Taxonomy Database with hierarchical genres, BPM analysis, energy levels, mixing compatibility, and audio classification for DJs and music professionals
+> # ⚠️ CRITICAL: THIS REPOSITORY MUST BE PRIVATE ⚠️
+> 
+> **This repository contains sensitive production configuration.**
+> 
+> - ✅ Core system files have been secured with environment variables
+> - ⚠️ You MUST rotate all credentials that were previously exposed
+> - 📋 See [SECURITY_WARNING.md](SECURITY_WARNING.md) for immediate actions
+> - 📖 See [SECURITY.md](SECURITY.md) for complete security policy
 
-⚠️ **SECURITY NOTICE**: This repository contains sensitive configuration for a production music taxonomy system and should be kept PRIVATE. See [SECURITY.md](SECURITY.md) for important security information.
+Comprehensive Electronic Music Taxonomy Database with hierarchical genres, BPM analysis, energy levels, mixing compatibility, and audio classification for DJs and music professionals
 
 ## Quick Start
 
